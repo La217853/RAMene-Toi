@@ -2,7 +2,7 @@
 {
     public class ConfigPC
     {
-        public int Id_configuration_pc { get; set; }
-        public string nom_configuration_pc { get; set; }
+        public int IdConfigurationPc { get; set; }
+        public string NomConfigurationPc { get; set; }
     }
 }
