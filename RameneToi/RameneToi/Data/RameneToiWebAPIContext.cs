@@ -40,7 +40,7 @@ namespace RameneToi.Data
                 .HasOne(c => c.Utilisateur)
                 .WithMany(u => u.Commandes)
                 .HasForeignKey(c => c.UtilisateurId)
-                .OnDelete(DeleteBehavior.Restrict); // ou NoAction
+                .OnDelete(DeleteBehavior.Restrict); // Limite la suppresion en cascade si le user a des commandes
 
             // ConfigurationPc 1–1 Commande : pas de cascade
             modelBuilder.Entity<Commande>()
