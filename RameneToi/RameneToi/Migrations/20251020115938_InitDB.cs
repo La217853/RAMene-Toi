@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -54,14 +53,14 @@ namespace RameneToi.Migrations
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MotDePasse = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MotDePasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdresseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Utilisateurs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Utilisateurs_Adresses_AdresseId",
+                        name: "FK_Adresses_Utilisateurs",
                         column: x => x.AdresseId,
                         principalTable: "Adresses",
                         principalColumn: "Id",

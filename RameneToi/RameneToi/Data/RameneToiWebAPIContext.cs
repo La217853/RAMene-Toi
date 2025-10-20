@@ -56,6 +56,12 @@ namespace RameneToi.Data
                 .UsingEntity(j =>
                     j.ToTable("est_composé_de") 
                 );
+
+            modelBuilder.Entity<Utilisateurs>()
+        .HasOne(u => u.Adresse)
+        .WithMany(a => a.Utilisateur)
+        .HasForeignKey(u => u.AdresseId) // propriété FK sur Utilisateurs
+        .HasConstraintName("FK_Adresses_Utilisateurs");
         }
     }
     }
