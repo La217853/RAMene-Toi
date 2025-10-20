@@ -5,7 +5,7 @@
 namespace RameneToi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,9 +35,9 @@ namespace RameneToi.Migrations
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Marque = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Modele = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prix = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Stock = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Score = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Prix = table.Column<int>(type: "int", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
