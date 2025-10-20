@@ -6,7 +6,7 @@
         public string Prenom { get; set; }
         public string Nom { get; set; }
         public string Email { get; set; }
-        public DateTime MotDePasse { get; set; }
+        public string MotDePasse { get; set; }
 
         //Foreign key vers l'entité Adresse 
         public int AdresseId { get; set; }
