@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace RameneToi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,9 +35,9 @@ namespace RameneToi.Migrations
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Marque = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Modele = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prix = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Stock = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Score = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Prix = table.Column<int>(type: "int", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,14 +53,14 @@ namespace RameneToi.Migrations
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MotDePasse = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MotDePasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdresseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Utilisateurs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Utilisateurs_Adresses_AdresseId",
+                        name: "FK_Adresses_Utilisateurs",
                         column: x => x.AdresseId,
                         principalTable: "Adresses",
                         principalColumn: "Id",
