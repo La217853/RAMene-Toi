@@ -47,10 +47,11 @@ namespace RameneToi.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ConfigurationPc>()
-            .HasMany(c => c.Composants)
-            .WithMany(p => p.Configurations)  //dans Composant.cs
-            .UsingEntity(j => j.ToTable("est_composé_de"));
-
+                .HasMany(cp => cp.Composants)
+                .WithMany(c => c.Configurations)
+                .UsingEntity(j =>
+                    j.ToTable("est_composé_de") 
+                );
         }
     }
 }
