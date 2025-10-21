@@ -1,4 +1,6 @@
-﻿namespace RameneToi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace RameneToi.Models
 {
     public class Utilisateurs
     {
@@ -9,8 +11,9 @@
         public string MotDePasse { get; set; }
 
         //Foreign key vers l'entité Adresse 
-        public int AdresseId { get; set; }
-        public Adresse Adresse { get; set; } = null!;
+        public int? AdresseId { get; set; }
+        [JsonIgnore]
+        public Adresse? Adresse { get; set; } = null!;
 
         //new() = juste initialisation de la liste automatiquement
         public List<ConfigurationPc> Configurations { get; set; } = new();
