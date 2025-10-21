@@ -12,8 +12,9 @@
         public int AdresseId { get; set; }
         public Adresse Adresse { get; set; } = null!;
 
-        //new() = juste initialisation de la liste automatiquement
-        public List<ConfigurationPc> Configurations { get; set; } = new();
-        public List<Commande> Commandes { get; set; } = new();
+        public List<ConfigurationPc> ConfigurationsPc { get; set; }
+
+        // Propriété de navigation pour la relation un-à-plusieurs (avec Commande)
+        public List<Commande> Commandes { get; set; }
     }
 }

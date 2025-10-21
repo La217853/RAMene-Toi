@@ -1,4 +1,6 @@
-﻿ namespace RameneToi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace RameneToi.Models
 {
     public class Composant
     {
@@ -13,6 +15,7 @@
 
         //Un Composant peut être dans plusieurs configurations
         //Une configuration peut contenir plusieurs composants
-        public List<ConfigurationPc> Configurations { get; set; } = new();
+        [JsonIgnore]
+        public List<ConfigurationPc> Configurations { get; set; }
     }
 }

@@ -12,8 +12,6 @@ namespace RameneToi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<RameneToiContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiContext") ?? throw new InvalidOperationException("Connection string 'RameneToiContext' not found.")));
             builder.Services.AddDbContext<RameneToiWebAPIContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiWebAPIContext") ?? throw new InvalidOperationException("Connection string 'RameneToiWebAPIContext' not found.")));
 

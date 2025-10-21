@@ -14,9 +14,9 @@ namespace RameneToi.Controllers
     [ApiController]
     public class CommandesController : ControllerBase
     {
-        private readonly RameneToiContext _context;
+        private readonly RameneToiWebAPIContext _context;
 
-        public CommandesController(RameneToiContext context)
+        public CommandesController(RameneToiWebAPIContext context)
         {
             _context = context;
         }
@@ -25,14 +25,14 @@ namespace RameneToi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Commande>>> GetCommande()
         {
-            return await _context.Commande.ToListAsync();
+            return await _context.Commandes.ToListAsync();
         }
 
         // GET: api/Commandes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Commande>> GetCommande(int id)
         {
-            var commande = await _context.Commande.FindAsync(id);
+            var commande = await _context.Commandes.FindAsync(id);
 
             if (commande == null)
             {
@@ -78,7 +78,7 @@ namespace RameneToi.Controllers
         [HttpPost]
         public async Task<ActionResult<Commande>> PostCommande(Commande commande)
         {
-            _context.Commande.Add(commande);
+            _context.Commandes.Add(commande);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCommande", new { id = commande.Id }, commande);
@@ -88,13 +88,13 @@ namespace RameneToi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCommande(int id)
         {
-            var commande = await _context.Commande.FindAsync(id);
+            var commande = await _context.Commandes.FindAsync(id);
             if (commande == null)
             {
                 return NotFound();
             }
 
-            _context.Commande.Remove(commande);
+            _context.Commandes.Remove(commande);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace RameneToi.Controllers
 
         private bool CommandeExists(int id)
         {
-            return _context.Commande.Any(e => e.Id == id);
+            return _context.Commandes.Any(e => e.Id == id);
         }
     }
 }

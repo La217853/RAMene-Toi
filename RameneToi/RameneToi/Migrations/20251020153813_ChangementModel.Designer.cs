@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RameneToi.Data;
 
@@ -10,9 +11,11 @@ using RameneToi.Data;
 namespace RameneToi.Migrations
 {
     [DbContext(typeof(RameneToiWebAPIContext))]
-    partial class RameneToiWebAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20251020153813_ChangementModel")]
+    partial class ChangementModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace RameneToi.Migrations
 
                     b.HasIndex("ConfigurationsId");
 
-                    b.ToTable("est_composé_de", (string)null);
+                    b.ToTable("ComposantConfigurationPc");
                 });
 
             modelBuilder.Entity("RameneToi.Models.Adresse", b =>
@@ -80,8 +83,6 @@ namespace RameneToi.Migrations
 
                     b.HasIndex("ConfigurationPcId")
                         .IsUnique();
-
-                    b.HasIndex("UtilisateurId");
 
                     b.ToTable("Commandes");
                 });
@@ -175,8 +176,7 @@ namespace RameneToi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdresseId")
-                        .IsUnique();
+                    b.HasIndex("AdresseId");
 
                     b.ToTable("Utilisateurs");
                 });
@@ -198,27 +198,17 @@ namespace RameneToi.Migrations
 
             modelBuilder.Entity("RameneToi.Models.Commande", b =>
                 {
-                    b.HasOne("RameneToi.Models.ConfigurationPc", "ConfigurationPc")
+                    b.HasOne("RameneToi.Models.ConfigurationPc", null)
                         .WithOne("Commande")
                         .HasForeignKey("RameneToi.Models.Commande", "ConfigurationPcId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("RameneToi.Models.Utilisateurs", "Utilisateur")
-                        .WithMany("Commandes")
-                        .HasForeignKey("UtilisateurId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ConfigurationPc");
-
-                    b.Navigation("Utilisateur");
                 });
 
             modelBuilder.Entity("RameneToi.Models.ConfigurationPc", b =>
                 {
                     b.HasOne("RameneToi.Models.Utilisateurs", "Utilisateur")
-                        .WithMany("ConfigurationsPc")
+                        .WithMany()
                         .HasForeignKey("UtilisateurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -229,30 +219,17 @@ namespace RameneToi.Migrations
             modelBuilder.Entity("RameneToi.Models.Utilisateurs", b =>
                 {
                     b.HasOne("RameneToi.Models.Adresse", "Adresse")
-                        .WithOne("utilisateur")
-                        .HasForeignKey("RameneToi.Models.Utilisateurs", "AdresseId")
+                        .WithMany()
+                        .HasForeignKey("AdresseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Adresse");
                 });
 
-            modelBuilder.Entity("RameneToi.Models.Adresse", b =>
-                {
-                    b.Navigation("utilisateur")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RameneToi.Models.ConfigurationPc", b =>
                 {
                     b.Navigation("Commande");
-                });
-
-            modelBuilder.Entity("RameneToi.Models.Utilisateurs", b =>
-                {
-                    b.Navigation("Commandes");
-
-                    b.Navigation("ConfigurationsPc");
                 });
 #pragma warning restore 612, 618
         }
