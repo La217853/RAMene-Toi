@@ -56,6 +56,16 @@ namespace RameneToi.Data
                 .UsingEntity(j =>
                     j.ToTable("est_composé_de") 
                 );
+
+            // Adresse 1–n Utilisateur
+            modelBuilder.Entity<Utilisateurs>()
+                .HasOne(u => u.Adresse)
+                .WithMany(a => a.Utilisateur)
+                .HasForeignKey(u => u.AdresseId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
+
         }
     }
     }
