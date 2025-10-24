@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using RameneToi.Data;
 // Ajoutez cette directive using pour les extensions SQL Server :
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.Extensions.DependencyInjection;
+using RameneToi.Data;
+using RameneToi.Models;
 
 namespace RameneToi
 {
@@ -14,6 +15,9 @@ namespace RameneToi
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<RameneToiWebAPIContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiWebAPIContext") ?? throw new InvalidOperationException("Connection string 'RameneToiWebAPIContext' not found.")));
+            
+            //service pour hasher mdp et enregistrer le MDP hasher S
+            builder.Services.AddScoped<IPasswordHasher<Utilisateurs>, PasswordHasher<Utilisateurs>>();
 
             // Add services to the container.
 

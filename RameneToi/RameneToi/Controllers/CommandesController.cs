@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -78,6 +79,23 @@ namespace RameneToi.Controllers
         [HttpPost]
         public async Task<ActionResult<Commande>> PostCommande(Commande commande)
         {
+
+            var LoadConfig = await _context.ConfigurationPcs
+                .Include(c => c.Composants)
+                .FirstOrDefaultAsync(c => c.Id == commande.ConfigurationPcId);
+
+            if(LoadConfig == null) { return BadRequest($"Configuration PC {commande.ConfigurationPcId} introuvable"); }
+
+            //commande.PrixConfiguration non nullable de base donc obligé de mettre ?? 0m = 0 type decimal
+            //Si LoadConfig.Composants est null alors renvoie null
+            //si Composants existe mais vide sum renvoie 0 alors
+            decimal totalConfigHT = LoadConfig.Composants?.Sum(cp => Convert.ToDecimal(cp.Prix)) ?? 0m;
+
+            decimal totalConfigTva = (totalConfigHT * 0.21m) + totalConfigHT;
+
+
+            commande.PrixConfiguration = totalConfigTva;
+            
             _context.Commandes.Add(commande);
             await _context.SaveChangesAsync();
 

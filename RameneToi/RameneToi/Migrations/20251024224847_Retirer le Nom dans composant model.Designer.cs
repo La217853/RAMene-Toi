@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RameneToi.Data;
 
@@ -10,9 +11,11 @@ using RameneToi.Data;
 namespace RameneToi.Migrations
 {
     [DbContext(typeof(RameneToiWebAPIContext))]
-    partial class RameneToiWebAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20251024224847_Retirer le Nom dans composant model")]
+    partial class RetirerleNomdanscomposantmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

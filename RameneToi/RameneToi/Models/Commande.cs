@@ -19,8 +19,8 @@ namespace RameneToi.Models
 
         // Propriétés de navigation
         [JsonIgnore]
-        public ConfigurationPc ConfigurationPc { get; set; }
+        public ConfigurationPc? ConfigurationPc { get; set; }
         [JsonIgnore]
-        public Utilisateurs Utilisateur { get; set; }
+        public Utilisateurs? Utilisateur { get; set; }
     }
 }

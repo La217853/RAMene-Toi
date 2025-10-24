@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RameneToi.Data;
 using RameneToi.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RameneToi.Controllers
 {
@@ -15,24 +16,32 @@ namespace RameneToi.Controllers
     public class UtilisateursController : ControllerBase
     {
         private readonly RameneToiWebAPIContext _context;
+        private readonly IPasswordHasher<Utilisateurs> _passwordHasher; //hash de type sha256
 
-        public UtilisateursController(RameneToiWebAPIContext context)
+        public UtilisateursController(RameneToiWebAPIContext context, IPasswordHasher<Utilisateurs> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher; //init pour le hashage
         }
 
         // GET: api/Utilisateurs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Utilisateurs>>> GetUtilisateurs()
         {
-            return await _context.Utilisateurs.ToListAsync();
+            return await _context.Utilisateurs
+                .Include(u => u.Commandes)
+                .Include(u => u.ConfigurationsPc)
+                .ToListAsync();
         }
 
         // GET: api/Utilisateurs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Utilisateurs>> GetUtilisateurs(int id)
         {
-            var utilisateurs = await _context.Utilisateurs.FindAsync(id);
+            var utilisateurs = await _context.Utilisateurs
+                .Include(u => u.Commandes)
+                .Include(u => u.ConfigurationsPc)
+                .FirstOrDefaultAsync(u => u.Id == id);
 
             if (utilisateurs == null)
             {
@@ -78,6 +87,14 @@ namespace RameneToi.Controllers
         [HttpPost]
         public async Task<ActionResult<Utilisateurs>> PostUtilisateurs(Utilisateurs utilisateurs)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            utilisateurs.MotDePasse = _passwordHasher.HashPassword(utilisateurs, utilisateurs.MotDePasse);
+
+
             _context.Utilisateurs.Add(utilisateurs);
             await _context.SaveChangesAsync();
 

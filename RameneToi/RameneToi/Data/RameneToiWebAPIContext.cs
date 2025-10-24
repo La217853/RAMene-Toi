@@ -27,8 +27,8 @@ namespace RameneToi.Data
         {
             modelBuilder.Entity<Utilisateurs>()
                  .HasOne(u => u.Adresse)
-                 .WithOne(a => a.utilisateur)
-                 .HasForeignKey<Utilisateurs>(u => u.AdresseId);
+                 .WithMany(a => a.utilisateur)
+                 .HasForeignKey(u => u.AdresseId);
 
             modelBuilder.Entity<Utilisateurs>()
                 .HasMany(u => u.ConfigurationsPc)
@@ -52,6 +52,8 @@ namespace RameneToi.Data
                 .UsingEntity(j =>
                     j.ToTable("est_composé_de") 
                 );
+
+
         }
     }
 }

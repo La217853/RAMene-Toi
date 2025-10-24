@@ -25,14 +25,20 @@ namespace RameneToi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Adresse>>> GetAdresses()
         {
-            return await _context.Adresses.ToListAsync();
+            return await _context.Adresses
+                .Include(a => a.utilisateur)
+                .ToListAsync();
+                
         }
 
         // GET: api/Adresses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Adresse>> GetAdresse(int id)
         {
-            var adresse = await _context.Adresses.FindAsync(id);
+            var adresse = await _context.Adresses
+                .Include(a => a.utilisateur)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
 
             if (adresse == null)
             {
