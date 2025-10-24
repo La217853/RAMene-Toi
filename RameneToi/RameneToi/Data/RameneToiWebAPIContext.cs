@@ -23,34 +23,29 @@ namespace RameneToi.Data
         public DbSet<RameneToi.Models.Utilisateurs> Utilisateurs { get; set; } = default!;
 
 
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-         
+            modelBuilder.Entity<Utilisateurs>()
+                 .HasOne(u => u.Adresse)
+                 .WithMany(a => a.utilisateur)
+                 .HasForeignKey(u => u.AdresseId);
 
-            // Utilisateur 1–n ConfigurationPc 
-            //
+            modelBuilder.Entity<Utilisateurs>()
+                .HasMany(u => u.ConfigurationsPc)
+                .WithOne(c => c.Utilisateur)
+                .HasForeignKey(c => c.UtilisateurId);
+
             modelBuilder.Entity<ConfigurationPc>()
-                .HasOne(cp => cp.Utilisateur)
-                .WithMany(u => u.Configurations)
-                .HasForeignKey(cp => cp.UtilisateurId) //clé étrangère dans ConfigurationPc
-                .OnDelete(DeleteBehavior.Cascade); // si delete utilisateur, delete configurations
+                .HasOne(c => c.Commande)
+                .WithOne(cmd => cmd.ConfigurationPc)
+                .HasForeignKey<Commande>(cmd => cmd.ConfigurationPcId);
 
-            // Utilisateur 1–n Commande
-            modelBuilder.Entity<Commande>()
-                .HasOne(c => c.Utilisateur)
-                .WithMany(u => u.Commandes)
+            modelBuilder.Entity<Utilisateurs>()
+                .HasMany(u => u.Commandes)
+                .WithOne(c => c.Utilisateur)
                 .HasForeignKey(c => c.UtilisateurId)
-                .OnDelete(DeleteBehavior.Restrict); // Limite la suppresion en cascade si le user a des commandes
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // ConfigurationPc 1–1 Commande : pas de cascade
-            modelBuilder.Entity<Commande>()
-                .HasOne(c => c.ConfigurationPc)
-                .WithOne(cp => cp.Commande)
-                .HasForeignKey<Commande>(c => c.ConfigurationPcId) //FK sur commande
-                .OnDelete(DeleteBehavior.Restrict); 
-
-            // Many–many ConfigurationPc <-> Composant via table "est_composé_de"
             modelBuilder.Entity<ConfigurationPc>()
                 .HasMany(cp => cp.Composants)
                 .WithMany(c => c.Configurations)
@@ -58,11 +53,8 @@ namespace RameneToi.Data
                     j.ToTable("est_composé_de") 
                 );
 
-            modelBuilder.Entity<Utilisateurs>()
-        .HasOne(u => u.Adresse)
-        .WithMany(a => a.Utilisateur)
-        .HasForeignKey(u => u.AdresseId) // propriété FK sur Utilisateurs
-        .HasConstraintName("FK_Adresses_Utilisateurs"); //le nom  de la contrainte FK côté base de données
+
         }
     }
-    }
+}
+    

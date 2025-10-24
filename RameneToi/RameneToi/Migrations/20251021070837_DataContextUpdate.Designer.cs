@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RameneToi.Data;
 
@@ -10,9 +11,11 @@ using RameneToi.Data;
 namespace RameneToi.Migrations
 {
     [DbContext(typeof(RameneToiWebAPIContext))]
-    partial class RameneToiWebAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20251021070837_DataContextUpdate")]
+    partial class DataContextUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,6 +105,10 @@ namespace RameneToi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Prix")
                         .HasColumnType("int");
 
@@ -171,7 +178,8 @@ namespace RameneToi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdresseId");
+                    b.HasIndex("AdresseId")
+                        .IsUnique();
 
                     b.ToTable("Utilisateurs");
                 });
@@ -224,8 +232,8 @@ namespace RameneToi.Migrations
             modelBuilder.Entity("RameneToi.Models.Utilisateurs", b =>
                 {
                     b.HasOne("RameneToi.Models.Adresse", "Adresse")
-                        .WithMany("utilisateur")
-                        .HasForeignKey("AdresseId")
+                        .WithOne("utilisateur")
+                        .HasForeignKey("RameneToi.Models.Utilisateurs", "AdresseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -234,7 +242,8 @@ namespace RameneToi.Migrations
 
             modelBuilder.Entity("RameneToi.Models.Adresse", b =>
                 {
-                    b.Navigation("utilisateur");
+                    b.Navigation("utilisateur")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RameneToi.Models.ConfigurationPc", b =>

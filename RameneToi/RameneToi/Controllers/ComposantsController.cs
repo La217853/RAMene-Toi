@@ -60,7 +60,6 @@ namespace RameneToi.Controllers
                 return NotFound();
             }
             //On met juste a jour ce qu'on veut si dessous, pas plus
-            existing.Nom = composant.Nom;
             existing.Type = composant.Type;
             existing.Marque = composant.Marque;
             existing.Modele = composant.Modele;
@@ -103,7 +102,6 @@ namespace RameneToi.Controllers
             // Juste contrôler les propretes que l'on veut perstité en DB, on persiste pas l'ID
             var composants = new Composant
             {
-                Nom = composant.Nom,
                 Type = composant.Type,
                 Marque = composant.Marque,
                 Modele = composant.Modele,
