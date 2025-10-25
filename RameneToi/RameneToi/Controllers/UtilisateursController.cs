@@ -30,7 +30,6 @@ namespace RameneToi.Controllers
         {
             return await _context.Utilisateurs
                 .Include(u => u.Commandes)
-                .Include(u => u.ConfigurationsPc)
                 .ToListAsync();
         }
 
@@ -40,7 +39,6 @@ namespace RameneToi.Controllers
         {
             var utilisateurs = await _context.Utilisateurs
                 .Include(u => u.Commandes)
-                .Include(u => u.ConfigurationsPc)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (utilisateurs == null)
