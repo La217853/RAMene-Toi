@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -20,10 +21,12 @@ namespace RameneToi.Models
         public Adresse? Adresse { get; set; } = null!;
 
         [JsonIgnore]
+        [ValidateNever]
         public List<ConfigurationPc> ConfigurationsPc { get; set; }
 
         // Propriété de navigation pour la relation un-à-plusieurs (avec Commande)
         [JsonIgnore]
+        [ValidateNever]
         public List<Commande> Commandes { get; set; }
 
         
