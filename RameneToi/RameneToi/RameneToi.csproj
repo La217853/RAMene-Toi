@@ -25,7 +25,6 @@
     <Folder Include="Migrations\" />
     <Folder Include="Tests\Integration\Controllers\" />
     <Folder Include="Tests\Integration\Repositories\" />
-    <Folder Include="Tests\Unit\Models\" />
     <Folder Include="Tests\Unit\Validators\" />
     <Folder Include="Tests\Unit\Services\" />
   </ItemGroup>
