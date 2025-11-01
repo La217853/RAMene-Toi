@@ -8,7 +8,7 @@ namespace RameneToi.Models
         public string Type { get; set; } = null!;
         public string Marque { get; set; } = null!;
         public string Modele { get; set; } = null!;
-        public int Prix { get; set; }
+        public float Prix { get; set; }
         public int Stock { get; set; }
         public int Score { get; set; }
 
