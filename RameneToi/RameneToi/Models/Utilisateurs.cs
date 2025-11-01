@@ -15,8 +15,16 @@ namespace RameneToi.Models
         [JsonIgnore]
         public Adresse? Adresse { get; set; } = null!;
 
-        //new() = juste initialisation de la liste automatiquement
-        public List<ConfigurationPc> Configurations { get; set; } = new();
-        public List<Commande> Commandes { get; set; } = new();
+        [JsonIgnore]
+        public List<ConfigurationPc>? ConfigurationsPc { get; set; }
+
+        // Propriété de navigation pour la relation un-à-plusieurs (avec Commande)
+        [JsonIgnore]
+        public List<Commande>? Commandes { get; set; }
+
+        
+        [JsonPropertyName("CommandeId")] //Propriete de nom qui sera dans le Json
+        //Rajouter l'attribut CommandeId dans le json de l'utilisateur et remplir avec les Id des commandes associés
+        public List<int> CommandeId => Commandes?.Select(u => u.Id).ToList() ?? new List<int>();
     }
 }
