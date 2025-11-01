@@ -8,36 +8,36 @@ using RameneToi.Models;
 
 namespace RameneToi
 {
-    public class Program
+    public partial class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<RameneToiWebAPIContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiWebAPIContext") ?? throw new InvalidOperationException("Connection string 'RameneToiWebAPIContext' not found.")));
-            
+     builder.Services.AddDbContext<RameneToiWebAPIContext>(options =>
+      options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiWebAPIContext") ?? throw new InvalidOperationException("Connection string 'RameneToiWebAPIContext' not found.")));
+     
             //service pour hasher mdp et enregistrer le MDP hasher S
-            builder.Services.AddScoped<IPasswordHasher<Utilisateurs>, PasswordHasher<Utilisateurs>>();
+     builder.Services.AddScoped<IPasswordHasher<Utilisateurs>, PasswordHasher<Utilisateurs>>();
 
-            // Add services to the container.
+    // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+   builder.Services.AddControllers();
+       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+         var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+      {
+          app.UseSwagger();
+          app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+          app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+          app.UseAuthorization();
 
 
             app.MapControllers();
@@ -46,3 +46,5 @@ namespace RameneToi
         }
     }
 }
+// Rendre Program accessible pour les tests d'intégration
+public partial class Program { }
