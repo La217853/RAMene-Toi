@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RameneToi.Data;
 using RameneToi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RameneToi.Services;
+using BCrypt.Net;
 
 namespace RameneToi.Controllers
 {
@@ -16,18 +13,23 @@ namespace RameneToi.Controllers
     public class UtilisateursController : ControllerBase
     {
         private readonly RameneToiWebAPIContext _context;
-        private readonly IPasswordHasher<Utilisateurs> _passwordHasher; //hash de type sha256
 
-        public UtilisateursController(RameneToiWebAPIContext context, IPasswordHasher<Utilisateurs> passwordHasher)
+        public UtilisateursController(RameneToiWebAPIContext context)
         {
             _context = context;
-            _passwordHasher = passwordHasher; //init pour le hashage
         }
 
         // GET: api/Utilisateurs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Utilisateurs>>> GetUtilisateurs()
         {
+            //il faut être admin pour voir la liste des utilisateurs
+            var valid = new AuthorizationService().IsTokenValid(this.Request.Headers.Authorization.ToString(), "admin");
+
+            if(!valid)
+            {
+                return Unauthorized("Vous n'êtes pas autorisé à voir la liste des utilisateurs.");
+            }
             return await _context.Utilisateurs
                 .Include(u => u.Commandes)
                 .ToListAsync();
@@ -90,12 +92,13 @@ namespace RameneToi.Controllers
                 return BadRequest(ModelState);
             }
 
-            utilisateurs.MotDePasse = _passwordHasher.HashPassword(utilisateurs, utilisateurs.MotDePasse);
-
+            // Hachage avec BCrypt 
+            utilisateurs.MotDePasse = BCrypt.Net.BCrypt.HashPassword(utilisateurs.MotDePasse, workFactor: 12);
 
             _context.Utilisateurs.Add(utilisateurs);
             await _context.SaveChangesAsync();
 
+            // Ne renvoie pas le mot de passe haché idéalement — pour l'instant retourne l'entité (réfléchis DTO)
             return CreatedAtAction("GetUtilisateurs", new { id = utilisateurs.Id }, utilisateurs);
         }
 
@@ -118,6 +121,40 @@ namespace RameneToi.Controllers
         private bool UtilisateursExists(int id)
         {
             return _context.Utilisateurs.Any(e => e.Id == id);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromForm] string Email , [FromForm] string password)
+        {
+            var user = await _context.Utilisateurs.FirstOrDefaultAsync(u => u.Email == Email);
+            if (user == null) return BadRequest("Email ou mot de passe invalide.");
+
+            bool verified = false;
+
+            try
+            {
+                // Vérification BCrypt
+                verified = BCrypt.Net.BCrypt.Verify(password, user.MotDePasse);
+            }
+            catch (BCrypt.Net.SaltParseException)
+            {
+                // Fallback : l'ancien hash n'est pas bcrypt (ex: PasswordHasher). Tenter la verification avec PasswordHasher
+                var ph = new PasswordHasher<Utilisateurs>();
+                var res = ph.VerifyHashedPassword(user, user.MotDePasse, password);
+                if (res == PasswordVerificationResult.Success || res == PasswordVerificationResult.SuccessRehashNeeded)
+                {
+                    // Ré-hash avec BCrypt et sauvegarde (migration progressive des comptes)
+                    user.MotDePasse = BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12);
+                    _context.Utilisateurs.Update(user);
+                    await _context.SaveChangesAsync();
+                    verified = true;
+                }
+            }
+
+            if (!verified) return BadRequest("Email ou mot de passe invalide.");
+
+            var token = new AuthorizationService().CreateToken(user);
+            return Ok(new { token });
         }
     }
 }

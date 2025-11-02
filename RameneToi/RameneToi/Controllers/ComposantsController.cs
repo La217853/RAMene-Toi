@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RameneToi.Data;
 using RameneToi.Models;
+using RameneToi.Services;
 
 namespace RameneToi.Controllers
 {
@@ -47,6 +48,15 @@ namespace RameneToi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutComposant(int id, Composant composant)
         {
+
+            //il faut être admin pour pouvoir modifier un composant
+            var valid = new AuthorizationService().IsTokenValid(this.Request.Headers.Authorization.ToString(), "admin");
+
+            if (!valid)
+            {
+                return Unauthorized("Vous n'êtes pas autorisé à modifié un composant.");
+            }
+
             if (id != composant.Id)
             {
                 return BadRequest();
@@ -94,7 +104,15 @@ namespace RameneToi.Controllers
         public async Task<ActionResult<Composant>> PostComposant(Composant composant)
         {
 
-            if(composant == null)
+            //il faut être admin pour pouvoir ajouter un composant
+            var valid = new AuthorizationService().IsTokenValid(this.Request.Headers.Authorization.ToString(), "admin");
+
+            if (!valid)
+            {
+                return Unauthorized("Vous n'êtes pas autorisé à ajouter un composant.");
+            }
+
+            if (composant == null)
             {
                 return BadRequest();
             }
@@ -120,6 +138,15 @@ namespace RameneToi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComposant(int id)
         {
+
+            //il faut être admin pour pouvoir supprimer un composant
+            var valid = new AuthorizationService().IsTokenValid(this.Request.Headers.Authorization.ToString(), "admin");
+
+            if (!valid)
+            {
+                return Unauthorized("Vous n'êtes pas autorisé à supprimer un composant.");
+            }
+
             var composant = await _context.Composants.FindAsync(id);
             if (composant == null)
             {

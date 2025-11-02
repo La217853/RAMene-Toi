@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RameneToi.Data;
 using RameneToi.Models;
+using RameneToi.Services;
 
 namespace RameneToi.Controllers
 {
@@ -25,6 +26,13 @@ namespace RameneToi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Adresse>>> GetAdresses()
         {
+            //il faut être admin pour voir la liste des utilisateurs
+            var valid = new AuthorizationService().IsTokenValid(this.Request.Headers.Authorization.ToString(), "admin");
+
+            if (!valid)
+            {
+                return Unauthorized("Vous n'êtes pas autorisé à voir la liste des utilisateurs.");
+            }
             return await _context.Adresses
                 .Include(a => a.utilisateur)
                 .ToListAsync();
@@ -78,6 +86,8 @@ namespace RameneToi.Controllers
 
             return NoContent();
         }
+
+
 
         // POST: api/Adresses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
