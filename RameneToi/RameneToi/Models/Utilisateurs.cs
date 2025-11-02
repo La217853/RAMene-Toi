@@ -33,5 +33,8 @@ namespace RameneToi.Models
         [JsonPropertyName("CommandeId")] //Propriete de nom qui sera dans le Json
         //Rajouter l'attribut CommandeId dans le json de l'utilisateur et remplir avec les Id des commandes associés
         public List<int> CommandeId => Commandes?.Select(u => u.Id).ToList() ?? new List<int>();
+
+
+        public List<string> Roles { get; set; } = new();
     }
 }
