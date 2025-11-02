@@ -1,50 +1,60 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-// Ajoutez cette directive using pour les extensions SQL Server :
-using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using RameneToi.Data;
 using RameneToi.Models;
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<RameneToiWebAPIContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiWebAPIContext") ?? throw new InvalidOperationException("Connection string 'HELHaExampleWebAPIContext' not found.")));
 
-namespace RameneToi
+// Add services to the container.
+
+builder.Services.AddControllers();
+//service pour hasher mdp et enregistrer le MDP hasher
+builder.Services.AddScoped<IPasswordHasher<Utilisateurs>, PasswordHasher<Utilisateurs>>();
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
 {
-    public partial class Program
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        public static void Main(string[] args)
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid BearerToken",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-            var builder = WebApplication.CreateBuilder(args);
-     builder.Services.AddDbContext<RameneToiWebAPIContext>(options =>
-      options.UseSqlServer(builder.Configuration.GetConnectionString("RameneToiWebAPIContext") ?? throw new InvalidOperationException("Connection string 'RameneToiWebAPIContext' not found.")));
-     
-            //service pour hasher mdp et enregistrer le MDP hasher S
-     builder.Services.AddScoped<IPasswordHasher<Utilisateurs>, PasswordHasher<Utilisateurs>>();
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+}
+);
 
-    // Add services to the container.
-
-   builder.Services.AddControllers();
-       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-         var app = builder.Build();
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-      {
-          app.UseSwagger();
-          app.UseSwaggerUI();
-            }
-
-          app.UseHttpsRedirection();
-
-          app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-// Rendre Program accessible pour les tests d'intégration
-public partial class Program { }
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
