@@ -8,7 +8,7 @@ namespace RameneToi.Tests.Fixture
     {
    public RameneToiWebAPIContext CreateContext()
       {
-          // Créer une nouvelle base de données InMemory pour chaque test
+          // Crï¿½er une nouvelle base de donnï¿½es InMemory pour chaque test
    var options = new DbContextOptionsBuilder<RameneToiWebAPIContext>()
       .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
       .Options;
@@ -21,7 +21,7 @@ namespace RameneToi.Tests.Fixture
 
 private void SeedData(RameneToiWebAPIContext context)
      {
- // Données de test de base
+ // Donnï¿½es de test de base
  var adresse = new Adresse
   {
 Id = 1,
@@ -38,8 +38,9 @@ var utilisateur = new Utilisateurs
      Email = "jean.dupont@test.com",
      MotDePasse = "hashedPassword123",
      AdresseId = 1,
-     Adresse = adresse
-     };
+     Adresse = adresse,
+    Roles = new List<string> { "admin" }
+};
 
        var composant = new Composant
        {
@@ -60,7 +61,7 @@ Type = "CPU",
 
  public void Dispose()
    {
- // Rien à faire ici puisque chaque contexte est créé et disposé par test
+ // Rien ï¿½ faire ici puisque chaque contexte est crï¿½ï¿½ et disposï¿½ par test
 }
     }
 }

@@ -1,8 +1,11 @@
-using Xunit;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RameneToi.Controllers;
+using RameneToi.Data;
 using RameneToi.Models;
 using RameneToi.Tests.Fixture;
+using Xunit;
 
 namespace RameneToi.Tests.Integration.Controllers
 {
@@ -15,7 +18,23 @@ namespace RameneToi.Tests.Integration.Controllers
       _fixture = fixture;
   }
 
-   [Fact]
+        private ComposantsController CreateControllerWithAdminUser(RameneToiWebAPIContext context)
+        {
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Headers["Authorization"] = "Bearer test-admin-token";
+
+            var controller = new ComposantsController(context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            return controller;
+        }
+
+        [Fact]
   public async Task GetComposants_ShouldReturnAllComposants()
      {
          // Arrange
@@ -79,8 +98,8 @@ await context.SaveChangesAsync();
  {
        // Arrange
       using var context = _fixture.CreateContext();
-         var controller = new ComposantsController(context);
- var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
      {
        Type = "SSD",
   Marque = "WD",
@@ -109,10 +128,10 @@ Score = 90
   {
 // Arrange
 using var context = _fixture.CreateContext();
-         var controller = new ComposantsController(context);
+            var controller = CreateControllerWithAdminUser(context);
 
-         // Act
-var result = await controller.PostComposant(null);
+            // Act
+            var result = await controller.PostComposant(null);
 
 // Assert
        Assert.IsType<BadRequestResult>(result.Result);
@@ -123,8 +142,8 @@ var result = await controller.PostComposant(null);
         {
   // Arrange
     using var context = _fixture.CreateContext();
-       var controller = new ComposantsController(context);
-      var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
        {
     Type = "RAM",
   Marque = "Corsair",
@@ -155,8 +174,8 @@ Assert.IsType<NoContentResult>(result);
   {
   // Arrange
     using var context = _fixture.CreateContext();
-  var controller = new ComposantsController(context);
- var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
 {
      Id = 1,
     Type = "Test",
@@ -179,8 +198,8 @@ Assert.IsType<BadRequestResult>(result);
 {
   // Arrange
       using var context = _fixture.CreateContext();
-var controller = new ComposantsController(context);
- var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
       {
     Id = 99999,
 Type = "Test",
@@ -203,8 +222,8 @@ var result = await controller.PutComposant(99999, composant);
         {
     // Arrange
 using var context = _fixture.CreateContext();
-     var controller = new ComposantsController(context);
-     var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
      {
   Type = "Case",
   Marque = "NZXT",
@@ -231,10 +250,10 @@ await context.SaveChangesAsync();
         {
         // Arrange
       using var context = _fixture.CreateContext();
-   var controller = new ComposantsController(context);
+            var controller = CreateControllerWithAdminUser(context);
 
-  // Act
-      var result = await controller.DeleteComposant(99999);
+            // Act
+            var result = await controller.DeleteComposant(99999);
 
    // Assert
   Assert.IsType<NotFoundResult>(result);
@@ -245,10 +264,10 @@ await context.SaveChangesAsync();
         {
  // Arrange
 using var context = _fixture.CreateContext();
-      var controller = new ComposantsController(context);
- var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
             {
-  Id = 12345, // ID manuel ne devrait pas être persisté
+  Id = 12345, // ID manuel ne devrait pas ï¿½tre persistï¿½
         Type = "CPU",
     Marque = "AMD",
  Modele = "Ryzen 5 7600X",
@@ -265,7 +284,7 @@ using var context = _fixture.CreateContext();
 var createdResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
  var createdComposant = Assert.IsType<Composant>(createdResult.Value);
             
-    // L'ID généré par la DB ne devrait pas être 12345
+    // L'ID gï¿½nï¿½rï¿½ par la DB ne devrait pas ï¿½tre 12345
        Assert.NotEqual(12345, createdComposant.Id);
      }
 
@@ -274,8 +293,8 @@ var createdResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
         {
   // Arrange
       using var context = _fixture.CreateContext();
-    var controller = new ComposantsController(context);
-var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
      {
   Type = "Old Type",
    Marque = "Old Brand",
@@ -312,8 +331,8 @@ var updated = await context.Composants.FindAsync(composant.Id);
         {
        // Arrange
      using var context = _fixture.CreateContext();
-  var controller = new ComposantsController(context);
- var composant = new Composant
+            var controller = CreateControllerWithAdminUser(context);
+            var composant = new Composant
    {
  Type = "Monitor",
     Marque = "Samsung",

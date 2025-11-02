@@ -1,9 +1,12 @@
-using Xunit;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RameneToi.Controllers;
+using RameneToi.Data;
 using RameneToi.Models;
 using RameneToi.Tests.Fixture;
-using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace RameneToi.Tests.Integration.Controllers
 {
@@ -16,12 +19,38 @@ namespace RameneToi.Tests.Integration.Controllers
      _fixture = fixture;
         }
 
+        private CommandesController CreateControllerWithAdminUser(RameneToiWebAPIContext context)
+        {
+            var httpContext = new DefaultHttpContext();
+            httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+        new Claim(ClaimTypes.Name, "admin"),
+        new Claim(ClaimTypes.Role, "Admin")
+    }, "TestAuthentication"));
+
+            // Simule un token que ton AuthorizationService reconnaît comme valide
+            httpContext.Request.Headers["Authorization"] = "Bearer test-admin-token";
+
+            var controller = new CommandesController(context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            return controller;
+        }
+
+
         [Fact]
         public async Task GetCommande_ShouldReturnAllCommandes()
         {
+
       // Arrange
      using var context = _fixture.CreateContext();
-     var controller = new CommandesController(context);
+            var controller = CreateControllerWithAdminUser(context);
+            
 
      // Act
             var result = await controller.GetCommande();
