@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11123.170 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RameneToi", "RameneToi\RameneToi.csproj", "{325CB7FA-F3BA-46F7-A661-B8A165490ABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RameneToi.Tests", "RameneToi.Tests\RameneToi.Tests.csproj", "{8CCB6B95-8547-480E-B9A5-04DA1DB11813}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{325CB7FA-F3BA-46F7-A661-B8A165490ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325CB7FA-F3BA-46F7-A661-B8A165490ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325CB7FA-F3BA-46F7-A661-B8A165490ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325CB7FA-F3BA-46F7-A661-B8A165490ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CCB6B95-8547-480E-B9A5-04DA1DB11813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CCB6B95-8547-480E-B9A5-04DA1DB11813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CCB6B95-8547-480E-B9A5-04DA1DB11813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CCB6B95-8547-480E-B9A5-04DA1DB11813}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4374C71-D9D6-428B-BAE4-D9B04D2FD578}
+	EndGlobalSection
+EndGlobal
