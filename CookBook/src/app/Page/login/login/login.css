@@ -1,0 +1,180 @@
+
+h1{
+    font-size: 50px;
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Image du chapeau positionnée au-dessus du 2ème o */
+h1 img {
+position: absolute;
+  width: 40px;
+  height: auto;
+  top: -13px;
+  left: 51.5%;
+  margin-left: 15px;
+  transform: rotate(15deg);
+  z-index: 10;
+}
+.auth-container {
+  max-width: 537px;
+  margin: 45px auto;
+  padding: 70px 50px;
+  background-color: #f8f8ff;
+  border: 3px solid #656569;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.auth-container h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: normal;
+  font-style: italic;
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 14px;
+  border: 2px solid #3e3e41;
+  border-radius: 4px;
+  background-color: white;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #cc5c01;
+}
+
+.form-group input::placeholder {
+  color: #999;
+  font-size: 13px;
+}
+
+.text-danger {
+  display: block;
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Groupe de boutons côte à côte */
+.button-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  min-width: 130px;
+}
+
+button[type="submit"],
+.btn-primary {
+  background-color: #cc5c01;
+  color: #000000;
+  border: 1px solid #0808c8;
+}
+
+button[type="submit"]:hover:not(:disabled),
+.btn-primary:hover:not(:disabled) {
+  background-color: #c8c8d8;
+}
+
+button[type="submit"]:disabled,
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #e8e8f0;
+  color: #666;
+  border: 1px solid #c0c0d0;
+}
+
+.btn-secondary:hover {
+  background-color: #d8d8e8;
+}
+
+
+button[type="submit"]:not(.btn-primary) {
+  width: 100%;
+  max-width: 200px;
+  display: block;
+  margin: 20px auto 0;
+}
+
+.alert-error {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.auth-container p {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 14px;
+  color: #666;
+}
+
+.auth-container p a {
+  color: #cc5c01;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-container p a:hover {
+  text-decoration: underline;
+}
+
+.cookbook-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.cookbook-header h1 {
+  font-size: 48px;
+  font-style: italic;
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+

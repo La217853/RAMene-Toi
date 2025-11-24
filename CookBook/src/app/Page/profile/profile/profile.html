@@ -1,0 +1,26 @@
+
+<div class="frame">
+  <div class="center">
+     @if (user(); as u) {
+		<div class="profile">
+			
+			<div class="name">{{ u.pseudo }}</div>
+			<div class="job">{{ u.role?.nom_role || 'Utilisateur' }}</div>
+		
+		</div>
+		
+		<div class="stats">
+			<div class="box">
+				<span class="value">{{ recettesCount() }}</span>
+				<span class="parameter">Recettes postées</span>
+			</div>
+			<div class="box">
+				<span class="value">{{favoritesCount()}}</span>
+				<span class="parameter">Favoris</span>
+			</div>
+
+		</div>
+   } @else {
+    <p>Chargement des données...</p>
+  }
+</div>
