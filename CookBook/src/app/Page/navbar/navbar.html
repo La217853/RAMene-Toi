@@ -1,0 +1,53 @@
+    <!-- si pas login alors pas de navbar -->
+@if (isAuthenticated()) {
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo" (click)="navigateToHome()">
+      <span class="navbar-logo-text" >
+        CookBook
+        <img src="/Images/Chapeau.PNG" alt="CookBook Logo" class="logo-hat">
+      </span>
+    </div>
+
+    <!-- Navigation items -->
+    <div class="navbar-nav">
+      <button class="nav-item">
+        <img src="/Images/kitchen-book.svg" class="logo-cuisine">
+        Découvrir
+      </button>
+
+      <button class="nav-item">
+     <img src="/Images/cookbook.png" class="logo-cuisine">
+        Mes recettes
+      </button>
+
+      <button class="nav-item">
+      <img src="/Images/low heat.png" class="logo-cuisine">
+        Ajouter une recette
+      </button>
+
+      <button class="nav-item">
+          <img src="/Images/favoris.png" class="logo-cuisine">
+
+        mes favoris
+      </button>
+    </div>
+
+ 
+    <div class="navbar-profile">
+      <button class="profile-button">
+        <img src="/Images/utilisateur.png" class="logo-profil">
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" (click)="navigateToProfile()">
+          Profil
+        </button>
+        <button class="dropdown-item" (click)="logout()">
+         déconnecter
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+}
