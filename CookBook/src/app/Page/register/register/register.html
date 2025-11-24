@@ -1,0 +1,30 @@
+
+<h1>CookBook<img src="/Images/Chapeau.PNG" alt="CookBook Logo"></h1>
+
+<div class="auth-container">
+  <h2>Inscription</h2>
+  
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Pseudo</label>
+      <input type="text" formControlName="pseudo">
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" formControlName="email">
+    </div>
+
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" formControlName="motDePasse">
+      @if (registerForm.get('motDePasse')?.hasError('minlength')) {
+        <small>Le mot de passe doit faire 6 caractères minimum.</small>
+      }
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
+  </form>
+
+  <p>Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+</div>

@@ -1,0 +1,122 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:600,300);
+
+.frame {
+  position: absolute;
+  top: 42%;
+  left: 45%;
+  width: 600px;
+  height: 600px;
+  margin-top: -200px;
+  margin-left: -200px;
+  border-radius: 10px;
+  box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+	background: #000000;
+  background: -webkit-linear-gradient(bottom left,#c9cbcd);
+  background: -moz-linear-gradient(bottom left, #c9cbcd);
+  background: -o-linear-gradient(bottom left, #c9cbcd);
+  background: linear-gradient(to top right, #c9cbcd); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EEBE6C', endColorstr='#CA7C4E',GradientType=1 ); 
+  color: #000000;
+	font-family: 'Open Sans', Helvetica, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.center {
+  position: absolute;
+  top: 50px;
+  left: 40px;
+	height: 499px;
+	width: 520px;
+	background: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 10px 10px 15px 0 rgba(0,0,0,0.3);
+}
+
+.profile {
+	float: left;
+	width: 200px;
+	height: 320px;
+	text-align: center;
+    margin-top: 35%;
+	
+	
+	.name {
+        
+		font-size: 40px;
+		font-weight: 600;
+		margin-top: 20px;
+	}
+	
+	.job {
+		font-size: 15px;
+		line-height: 15px;
+	}
+	
+	.actions {
+		margin-top: 33px;
+		
+		.btn {
+			display: block;
+			width: 120px;
+			height: 30px;
+			margin: 0 auto 10px auto;
+			background: none;
+			border: 1px solid #000000;
+			border-radius: 15px;
+			font-size: 12px;
+			font-weight: 600;
+			box-sizing: border-box;
+			transition: all .3s ease-in-out;
+			color: #000000;
+			
+			&:hover {
+				background: #000000;
+				color: #fff;
+			}
+		}
+	}
+	
+}
+
+.stats {
+	float: left;
+	
+	.box {
+		box-sizing: border-box;
+    
+		width: 320px;
+		height: 249px;
+		background: #e3ddda;
+		text-align: center;
+		padding-top: 28px;
+		transition: all .4s ease-in-out;
+		
+		&:hover {
+			background: #b9b9b9;
+			cursor: pointer;
+		}
+		
+		&:nth-child(2) {
+			margin: 1px 0;
+		}
+		
+	}
+	
+	span {
+		display: block;
+	}
+	
+	.value {
+        margin-top: 25%;
+		font-size: 25px;
+		font-weight: 600;
+       
+	}
+	
+	.parameter {
+		font-size: 13px;
+	}
+	
+}
