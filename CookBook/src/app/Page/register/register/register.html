@@ -3,7 +3,15 @@
 
 <div class="auth-container">
   <h2>Inscription</h2>
-  
+
+  @if (successMessage) {
+    <div class="success-message">{{ successMessage }}</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label>Pseudo</label>

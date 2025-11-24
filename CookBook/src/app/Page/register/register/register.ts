@@ -17,6 +17,7 @@ export class RegisterComponent {
   private router = inject(Router);
 
   errorMessage = '';
+  successMessage = '';
 
 
   registerForm = this.fb.group({
@@ -31,12 +32,30 @@ export class RegisterComponent {
       // cast any pour ok objet attendu
       this.authService.register(this.registerForm.value as any).subscribe({
         next: () => {
-         
-          this.router.navigate(['/login']);
+          this.successMessage = 'Compte créé avec succès ! Redirection...';
+          this.errorMessage = '';
+          // Redirection après 1 secondes
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1000);
         },
         error: (err) => {
           console.error(err);
-          this.errorMessage = 'erreur lors de l\'inscription.';
+          this.successMessage = '';
+
+          // Gestion d'erreurs
+          if (err.status === 409 || err.status === 400) {
+          
+            if (err.error?.message) {
+              this.errorMessage = err.error.message;
+            } else {
+              this.errorMessage = 'Cet email ou ce pseudo est déjà utilisé.';
+            }
+          } else if (err.status === 500) {
+            this.errorMessage = 'Erreur du serveur. Veuillez réessayer plus tard.';
+          } else {
+            this.errorMessage = 'Erreur lors de l\'inscription. Veuillez réessayer.';
+          }
         }
       });
     }
