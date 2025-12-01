@@ -1,0 +1,69 @@
+@if (isEditMode() && message()) {
+  <div class="msg" [ngClass]="messageType()">
+    {{ message() }}
+  </div>
+}
+<div class="frame">
+  <div class="center">
+     @if (user(); as u) {
+		<div class="profile">
+
+			@if (!isEditMode()) {
+				
+				<div class="name">{{ u.pseudo }}</div>
+				<div class="job">{{ u.role?.nom_role || 'Utilisateur' }}</div>
+				<button class="put" (click)="toggleEditMode()">Modifier</button>
+			} @else {
+				<!-- Mode PUT -->
+				<form [formGroup]="profilForm" class="edit-form">
+					<div class="form-group">
+						<label for="pseudo">Pseudo</label>
+						<input
+							type="text"
+							id="pseudo"
+							formControlName="pseudo"
+							class="form-control"
+							placeholder="Votre pseudo"
+						>
+						@if (profilForm.get('pseudo')?.invalid && profilForm.get('pseudo')?.touched) {
+							<span class="error">Le pseudo est requis</span>
+						}
+					</div>
+
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input
+							type="email"
+							id="email"
+							formControlName="email"
+							class="form-control"
+							placeholder="Votre email"
+						>
+						@if (profilForm.get('email')?.invalid && profilForm.get('email')?.touched) {
+							<span class="error">Email valide requis</span>
+						}
+					</div>
+
+					<div class="form-buttons">
+						<button type="button" class="btn-save" (click)="PutProfile(u.id)">Enregistrer</button>
+						<button type="button" class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+					</div>
+				</form>
+			}
+		</div>
+
+		<div class="stats">
+			<div class="box">
+				<span class="value">{{ recettesCount() }}</span>
+				<span class="parameter">Recettes postées</span>
+			</div>
+			<div class="box">
+				<span class="value">{{favoritesCount()}}</span>
+				<span class="parameter">Favoris</span>
+			</div>
+
+		</div>
+   } @else {
+    <p>Chargement des données...</p>
+  }
+</div>
