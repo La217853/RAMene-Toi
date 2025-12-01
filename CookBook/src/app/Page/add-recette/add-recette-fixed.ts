@@ -53,24 +53,29 @@ export class AddRecetteComponent implements OnInit {
       titre_recette: ['', [Validators.required, Validators.minLength(3)]],
       description_recette: ['', Validators.required],
       photo_recette: [''],
-      categorieId: ['', Validators.required],
+      categorieId: [''],
       etapes: this.formBuilder.array([]),
       ingredients: this.formBuilder.array([])
     });
   }
 
   private loadCategories() {
+    console.log('Chargement des catégories...');
     this.recetteService.getCategories().subscribe({
       next: (data: any) => {
-        console.log('Catégories chargées:', data);
+        console.log('✅ Catégories chargées:', data);
         this.categories = data;
         if (!data || data.length === 0) {
-          this.errorMessage = 'Aucune catégorie disponible. Veuillez contacter l\'administrateur.';
+          console.warn('⚠️ Aucune catégorie en base de données');
+          this.errorMessage = 'Aucune catégorie disponible. Contactez l\'administrateur.';
+        } else {
+          this.errorMessage = '';
         }
       },
       error: (error: any) => {
-        console.error('Erreur lors du chargement des catégories:', error);
-        this.errorMessage = 'Impossible de charger les catégories. Vérifiez votre connexion.';
+        console.error('❌ Erreur lors du chargement des catégories:', error);
+        console.error('Statut:', error.status);
+        console.error('Message:', error.message);
       }
     });
   }
@@ -145,30 +150,25 @@ export class AddRecetteComponent implements OnInit {
       utilisateurId: currentUser.id
     };
 
-    // Ajouter categorieId seulement s'il existe
     if (categorieIdValue) {
       recetteData.categorieId = parseInt(categorieIdValue);
     }
 
     console.log('Création de recette avec données:', recetteData);
 
-    // Créer la recette d'abord
     this.recetteService.createRecette(recetteData).subscribe({
       next: (response: any) => {
         console.log('Recette créée avec succès:', response);
         const recetteId = response.id;
 
-        // Préparer les étapes
         const etapesToCreate = this.etapesArray.value.map((etape: any, index: number) => ({
           titre_etape: index + 1,
           description_etape: etape.description_etape,
           id_recette: recetteId
         }));
 
-        // Préparer les ingrédients
         const ingredientsToCreate = this.ingredientsArray.value;
 
-        // Appeler la méthode pour créer étapes et ingrédients
         this.createEtapesAndIngredients(recetteId, etapesToCreate, ingredientsToCreate);
       },
       error: (error: any) => {
@@ -180,20 +180,17 @@ export class AddRecetteComponent implements OnInit {
   }
 
   private createEtapesAndIngredients(recetteId: number, etapes: any[], ingredients: any[]) {
-    // Si pas d'étapes et pas d'ingrédients, considérer comme succès
     if (etapes.length === 0 && ingredients.length === 0) {
       this.finishRecetteCreation();
       return;
     }
 
-    // Créer toutes les étapes
     if (etapes.length > 0) {
       const etapeRequests = etapes.map(etape => this.recetteService.createEtape(etape));
 
       forkJoin(etapeRequests).subscribe({
         next: (etapeResponses: any) => {
           console.log('Étapes créées:', etapeResponses);
-          // Passer à la création des ingrédients
           this.createIngredientsAndLink(recetteId, ingredients);
         },
         error: (error: any) => {
@@ -203,14 +200,12 @@ export class AddRecetteComponent implements OnInit {
         }
       });
     } else {
-      // Pas d'étapes, passer directement aux ingrédients
       this.createIngredientsAndLink(recetteId, ingredients);
     }
   }
 
   private createIngredientsAndLink(recetteId: number, ingredients: any[]) {
     if (ingredients.length === 0) {
-      // Pas d'ingrédients, recette terminée
       this.finishRecetteCreation();
       return;
     }
@@ -218,13 +213,11 @@ export class AddRecetteComponent implements OnInit {
     const ingredientRequests: any[] = [];
 
     for (const ingredient of ingredients) {
-      // Vérifier si l'ingrédient existe déjà
       const existingIngredient = this.allIngredients.find(
         (ing: any) => ing.nom_ingredient.toLowerCase() === ingredient.nom_ingredient.toLowerCase()
       );
 
       if (existingIngredient) {
-        // L'ingrédient existe, créer la liaison
         console.log('Ingrédient existant trouvé:', existingIngredient);
         ingredientRequests.push(
           this.recetteService.createRecetteIngredient({
@@ -234,7 +227,6 @@ export class AddRecetteComponent implements OnInit {
           })
         );
       } else {
-        // Créer l'ingrédient d'abord, puis créer la liaison
         console.log('Création nouvel ingrédient:', ingredient.nom_ingredient);
         ingredientRequests.push(
           this.recetteService.createIngredient({ nom_ingredient: ingredient.nom_ingredient }).pipe(
@@ -343,14 +335,12 @@ export class AddRecetteComponent implements OnInit {
     const file: File = event.target.files[0];
     
     if (file) {
-      // Vérifier que c'est une image
       if (!file.type.startsWith('image/')) {
         alert('Veuillez sélectionner une image valide');
         return;
       }
 
-      // Vérifier la taille (max 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
         alert('L\'image ne doit pas dépasser 5MB');
         return;
@@ -358,11 +348,9 @@ export class AddRecetteComponent implements OnInit {
 
       this.selectedFile = file;
 
-      // Créer une prévisualisation
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imagePreview = e.target.result;
-        // Mettre à jour le formulaire avec le nom du fichier pour l'instant
         this.recetteForm.patchValue({ photo_recette: file.name });
       };
       reader.readAsDataURL(file);
@@ -378,5 +366,6 @@ export class AddRecetteComponent implements OnInit {
     const fileInput = document.getElementById('photo_file') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
+    }
   }
-}}
+}

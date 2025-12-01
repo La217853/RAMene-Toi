@@ -68,9 +68,51 @@ export class RecetteService {
   }
 
   /**
+   * Crée une nouvelle catégorie
+   */
+  createCategorie(categorieData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Categories`, categorieData);
+  }
+
+  /**
    * Récupère une catégorie par ID
    */
   getCategorieById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/Categories/${id}`);
+  }
+
+  /**
+   * Crée une nouvelle étape
+   */
+  createEtape(etapeData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Etapes`, etapeData);
+  }
+
+  /**
+   * Récupère tous les ingrédients
+   */
+  getAllIngredients(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/Ingredients`);
+  }
+
+  /**
+   * Crée un nouvel ingrédient
+   */
+  createIngredient(ingredientData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Ingredients`, ingredientData);
+  }
+
+  /**
+   * Crée une liaison RecetteIngredient
+   */
+  createRecetteIngredient(recetteIngredientData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/RecetteIngredients`, recetteIngredientData);
+  }
+
+  /**
+   * Récupère tous les ingrédients d'une recette
+   */
+  getRecetteIngredients(recetteId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/RecetteIngredients/Recette/${recetteId}`);
   }
 }
