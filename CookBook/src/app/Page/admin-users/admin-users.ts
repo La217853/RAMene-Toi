@@ -51,6 +51,8 @@ export class AdminUsersComponent implements OnInit {
     this.isLoading.set(true);
     this.authService.getAllUsers().subscribe({
       next: (users) => {
+                console.log('Rôles chargés:', users);
+
         this.users.set(users);
         this.isLoading.set(false);
       },
@@ -156,4 +158,10 @@ getRoleName(roleId: number): string {
       this.messageType.set(null);
     }, 5000);
   }
+
+  //test current user
+  isCurrentUser(userId: User): boolean {
+    return userId.id === this.authService.currentUserSig()?.id;
+  }
+ 
 }

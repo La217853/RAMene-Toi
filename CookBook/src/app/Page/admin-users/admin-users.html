@@ -9,7 +9,7 @@
 
   @if (isLoading()) {
     <div class="loading">Chargement des utilisateurs...</div>
-  } @else {
+  } @else  {
     <div class="users-table">
       <table>
         <thead>
@@ -23,6 +23,7 @@
         </thead>
         <tbody>
           @for (user of users(); track user.id) {
+          
             <tr>
               @if (editingUserId() === user.id) {
                 <!-- Mode édition -->
@@ -71,18 +72,26 @@
                   </span>
                 </td>
                 <td class="actions">
+                  @if (!isCurrentUser(user)) {
                   <button class="btn-edit" (click)="startEdit(user)">Modifier</button>
                   <button class="btn-delete" (click)="deleteUser(user.id, user.pseudo)">Supprimer</button>
+                }@else {
+                  <span classe="self-adminCurrent ">Compte administrateur actuel verouillé</span>
+                }
                 </td>
+                
               }
             </tr>
+          
           } @empty {
             <tr>
               <td colspan="5" class="empty-state">Aucun utilisateur trouvé</td>
             </tr>
           }
+        
         </tbody>
       </table>
     </div>
   }
+
 </div>
