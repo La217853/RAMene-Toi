@@ -2,19 +2,10 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { RecetteService } from '../../Services/recette.service';
+import { User } from '../../Models/user.model';
+import { Role } from '../../Models/user.model';
 
-interface Role {
-  id: number;
-  nom_role: string;
-}
-
-interface User {
-  id: number;
-  pseudo: string;
-  email: string;
-  roleId: number;
-  role?: Role;
-}
 
 @Component({
 
@@ -34,7 +25,7 @@ export class AdminUsersComponent implements OnInit {
   message = signal<string | null>(null);
   messageType = signal<'success' | 'error' | null>(null);
   editingUserId = signal<number | null>(null);
-
+  recetteService = inject(RecetteService);
   // Formulaire d'édition
   editForm = this.fb.group({
     pseudo: ['', [Validators.required]],
@@ -51,7 +42,19 @@ export class AdminUsersComponent implements OnInit {
     this.isLoading.set(true);
     this.authService.getAllUsers().subscribe({
       next: (users) => {
-                console.log('Rôles chargés:', users);
+        console.log('Utilisateurs chargés:', users);
+
+      
+       users.forEach(user => {
+          this.recetteService.getRecettesByUtilisateur(user.id).subscribe({
+            next: (recettes) => {
+              user.recettesCount = recettes.length;
+          },
+         error: () => {
+              user.recettesCount = 0;
+            }
+          });
+        });
 
         this.users.set(users);
         this.isLoading.set(false);
@@ -163,5 +166,8 @@ getRoleName(roleId: number): string {
   isCurrentUser(userId: User): boolean {
     return userId.id === this.authService.currentUserSig()?.id;
   }
+
+   
+  
  
 }

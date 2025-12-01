@@ -56,9 +56,9 @@ thead {
   background: #f8f9fa;
 }
 
-th {
+.users-table tr {
   padding: 1rem;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   color: #495057;
   border-bottom: 2px solid #dee2e6;
@@ -71,6 +71,10 @@ td {
 
 tr:hover {
   background-color: #f8f9fa;
+}
+
+.users-table th {
+  text-align: center;
 }
 
 .role-badge {
@@ -99,14 +103,15 @@ button {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 500;
   transition: all 0.3s ease;
   font-size: 0.875rem;
+
 }
 
-.btn-edit {
+.btn-edit { 
   background-color: #8a8585;
   color: white;
+
 }
 
 .btn-edit:hover {
@@ -196,4 +201,11 @@ button {
   button {
     width: 100%;
   }
+}
+
+.actions-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
 }

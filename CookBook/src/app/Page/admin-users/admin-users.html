@@ -18,6 +18,7 @@
             <th>Pseudo</th>
             <th>Email</th>
             <th>Rôle</th>
+            <th>Recettes</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -57,9 +58,12 @@
                     }
                   </select>
                 </td>
-                <td class="actions">
-                  <button class="btn-save" (click)="saveUser(user.id)">Sauvegarder</button>
-                  <button class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+                <td>-</td>
+                <td>
+                  <div class="actions-vertical">
+                    <button class="btn-save" (click)="saveUser(user.id)">Sauvegarder</button>
+                    <button class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+                  </div>
                 </td>
               } @else {
                 <!-- Mode lecture -->
@@ -71,13 +75,16 @@
                     {{ getRoleName(user.roleId) }}
                   </span>
                 </td>
-                <td class="actions">
+                <td>{{ user.recettesCount ?? '-' }}</td>
+                <td>
                   @if (!isCurrentUser(user)) {
-                  <button class="btn-edit" (click)="startEdit(user)">Modifier</button>
-                  <button class="btn-delete" (click)="deleteUser(user.id, user.pseudo)">Supprimer</button>
-                }@else {
-                  <span classe="self-adminCurrent ">Compte administrateur actuel verouillé</span>
-                }
+                    <div class="actions-vertical">
+                      <button class="btn-edit" (click)="startEdit(user)">Modifier</button>
+                      <button class="btn-delete" (click)="deleteUser(user.id, user.pseudo)">Supprimer</button>
+                    </div>
+                  }@else {
+                    <span class="self-adminCurrent">Compte administrateur actuel verrouillé</span>
+                  }
                 </td>
                 
               }
