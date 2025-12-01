@@ -1,0 +1,88 @@
+<div class="admin-container">
+  <h1 class="admin-title">Gestion des utilisateurs</h1>
+
+  @if (message()) {
+    <div class="message" [ngClass]="messageType()">
+      {{ message() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading">Chargement des utilisateurs...</div>
+  } @else {
+    <div class="users-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Pseudo</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users(); track user.id) {
+            <tr>
+              @if (editingUserId() === user.id) {
+                <!-- Mode édition -->
+                <td>{{ user.id }}</td>
+                <td>
+                  <input
+                    type="text"
+                    [formControl]="editForm.controls.pseudo"
+                    class="form-input"
+                    placeholder="Pseudo"
+                  />
+                  @if (editForm.controls.pseudo.invalid && editForm.controls.pseudo.touched) {
+                    <span class="error-text">Requis</span>
+                  }
+                </td>
+                <td>
+                  <input
+                    type="email"
+                    [formControl]="editForm.controls.email"
+                    class="form-input"
+                    placeholder="Email"
+                  />
+                  @if (editForm.controls.email.invalid && editForm.controls.email.touched) {
+                    <span class="error-text">Email invalide</span>
+                  }
+                </td>
+                <td>
+                  <select [formControl]="editForm.controls.roleId" class="form-select">
+                    @for (role of roles(); track role.id) {
+                      <option [value]="role.id">{{ role.nom_role }}</option>
+                    }
+                  </select>
+                </td>
+                <td class="actions">
+                  <button class="btn-save" (click)="saveUser(user.id)">Sauvegarder</button>
+                  <button class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+                </td>
+              } @else {
+                <!-- Mode lecture -->
+                <td>{{ user.id }}</td>
+                <td>{{ user.pseudo }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <span class="role-badge" [class.Admin]="getRoleName(user.roleId)=== 'Admin'">
+                    {{ getRoleName(user.roleId) }}
+                  </span>
+                </td>
+                <td class="actions">
+                  <button class="btn-edit" (click)="startEdit(user)">Modifier</button>
+                  <button class="btn-delete" (click)="deleteUser(user.id, user.pseudo)">Supprimer</button>
+                </td>
+              }
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-state">Aucun utilisateur trouvé</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -32,14 +32,14 @@
 
         mes favoris
       </button>
-    </div>
 
- @if (authService.currentUserSig()?.role?.nom_role === 'ADMIN') {
-        <button class="nav-item admin-button">
-          <img src="/Images/gear.png" class="logo-cuisine">
+      @if (authService.currentUserSig()?.role?.nom_role === 'Admin') {
+        <button class="nav-item admin-button" (click)="navigateToAdmin()">
+          <img src="" class="logo-cuisine">
           Administration
         </button>
       }
+    </div>
     
  
     <div class="navbar-profile">
