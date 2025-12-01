@@ -1,0 +1,163 @@
+<div class="add-recette-container">
+  <div class="add-recette-wrapper">
+    <h1>Ajouter une nouvelle recette</h1>
+
+    <!-- Messages de succès/erreur -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      <p>{{ successMessage }}</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="recetteForm" (ngSubmit)="onSubmit()" class="recette-form">
+      
+      <!-- Titre -->
+      <div class="form-group">
+        <label for="titre">Titre de la recette *</label>
+        <input 
+          type="text" 
+          id="titre" 
+          formControlName="titre"
+          class="form-control"
+          [class.is-invalid]="submitted && titre?.invalid"
+          placeholder="Ex: Gâteau au chocolat">
+        <div *ngIf="submitted && titre?.invalid" class="error-message">
+          <p *ngIf="titre?.errors?.['required']">Le titre est obligatoire</p>
+          <p *ngIf="titre?.errors?.['minlength']">Le titre doit contenir au moins 3 caractères</p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea 
+          id="description" 
+          formControlName="description"
+          class="form-control"
+          [class.is-invalid]="submitted && description?.invalid"
+          placeholder="Décrivez votre recette..."
+          rows="5"></textarea>
+        <div *ngIf="submitted && description?.invalid" class="error-message">
+          <p *ngIf="description?.errors?.['required']">La description est obligatoire</p>
+        </div>
+      </div>
+
+      <!-- Catégorie -->
+      <div class="form-group">
+        <label for="categorieId">Catégorie *</label>
+        <select 
+          id="categorieId" 
+          formControlName="categorieId"
+          class="form-control"
+          [class.is-invalid]="submitted && categorieId?.invalid">
+          <option value="">Sélectionnez une catégorie</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">
+            {{ cat.nom_categorie }}
+          </option>
+        </select>
+        <div *ngIf="submitted && categorieId?.invalid" class="error-message">
+          <p *ngIf="categorieId?.errors?.['required']">La catégorie est obligatoire</p>
+        </div>
+      </div>
+
+      <!-- Temps et portions (ligne 1) -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tempsPreparation">Temps de préparation (minutes) *</label>
+          <input 
+            type="number" 
+            id="tempsPreparation" 
+            formControlName="tempsPreparation"
+            class="form-control"
+            [class.is-invalid]="submitted && tempsPreparation?.invalid"
+            placeholder="30" min="0">
+          <div *ngIf="submitted && tempsPreparation?.invalid" class="error-message">
+            <p *ngIf="tempsPreparation?.errors?.['required']">Le temps est obligatoire</p>
+            <p *ngIf="tempsPreparation?.errors?.['min']">Le temps doit être supérieur à 0</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tempsCuisson">Temps de cuisson (minutes) *</label>
+          <input 
+            type="number" 
+            id="tempsCuisson" 
+            formControlName="tempsCuisson"
+            class="form-control"
+            [class.is-invalid]="submitted && tempsCuisson?.invalid"
+            placeholder="45" min="0">
+          <div *ngIf="submitted && tempsCuisson?.invalid" class="error-message">
+            <p *ngIf="tempsCuisson?.errors?.['required']">Le temps est obligatoire</p>
+            <p *ngIf="tempsCuisson?.errors?.['min']">Le temps doit être supérieur à 0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Difficultés et portions (ligne 2) -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="difficulte">Niveau de difficulté *</label>
+          <select 
+            id="difficulte" 
+            formControlName="difficulte"
+            class="form-control"
+            [class.is-invalid]="submitted && difficulte?.invalid">
+            <option value="Facile">Facile</option>
+            <option value="Moyen">Moyen</option>
+            <option value="Difficile">Difficile</option>
+          </select>
+          <div *ngIf="submitted && difficulte?.invalid" class="error-message">
+            <p *ngIf="difficulte?.errors?.['required']">La difficulté est obligatoire</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="portions">Nombre de portions *</label>
+          <input 
+            type="number" 
+            id="portions" 
+            formControlName="portions"
+            class="form-control"
+            [class.is-invalid]="submitted && portions?.invalid"
+            placeholder="4" min="1">
+          <div *ngIf="submitted && portions?.invalid" class="error-message">
+            <p *ngIf="portions?.errors?.['required']">Le nombre de portions est obligatoire</p>
+            <p *ngIf="portions?.errors?.['min']">Le nombre de portions doit être au moins 1</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo (optionnel) -->
+      <div class="form-group">
+        <label for="photo">Photo de la recette (URL)</label>
+        <input 
+          type="text" 
+          id="photo" 
+          formControlName="photo"
+          class="form-control"
+          placeholder="https://exemple.com/photo.jpg">
+      </div>
+
+      <!-- Boutons -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="loading">
+          <span *ngIf="loading">Création en cours...</span>
+          <span *ngIf="!loading">Ajouter la recette</span>
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="cancel()"
+          [disabled]="loading">
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
