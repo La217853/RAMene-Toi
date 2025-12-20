@@ -1,0 +1,10 @@
+<div>
+  <h2>Liste des ingrédients</h2>
+  <ul>
+    <li *ngFor="let ing of ingredients">
+      {{ ing.name }}
+    </li>
+  </ul>
+
+  <button (click)="addIngredient()">Ajouter un ingrédient par défaut</button>
+</div>
