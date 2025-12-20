@@ -13,7 +13,7 @@ import { AuthService } from '../../Services/auth';
 export class NavbarComponent {
   constructor(
     private router: Router,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   navigateToHome(){
@@ -22,6 +22,10 @@ export class NavbarComponent {
 
   navigateToProfile() {
     this.router.navigate(['/profile']);
+  }
+
+  navigateToAdmin() {
+    this.router.navigate(['/admin/users']);
   }
 
   logout() {

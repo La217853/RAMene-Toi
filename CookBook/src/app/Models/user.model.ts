@@ -9,4 +9,5 @@ export interface User {
   email: string;
   roleId: number;
   role?: Role;
+  recettesCount?: number;
 }
