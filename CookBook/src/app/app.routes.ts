@@ -3,6 +3,7 @@ import { LoginComponent } from './Page/login/login/login';
 import { RegisterComponent } from './Page/register/register/register';
 import { ProfileComponent } from './Page/profile/profile/profile';
 import { DashboardComponent } from './Page/dashboard/dashboard';
+import { AdminUsersComponent } from './Page/admin-users/admin-users';
 import { inject } from '@angular/core';
 import { AuthService } from './Services/auth';
 
@@ -14,6 +15,23 @@ const authGuard = () => {
      authService.logout(); // Redirige vers login
      return false;
   }
+  return true;
+};
+
+const adminGuard = () => {
+  const authService = inject(AuthService);
+  const currentUser = authService.currentUserSig();
+
+  if (!authService.getToken()) {
+    authService.logout();
+    return false;
+  }
+
+  // Vérifier si l'utilisateur est admin
+  if (currentUser?.role?.nom_role !== 'Admin') {
+    return false;
+  }
+
   return true;
 };
 
@@ -29,6 +47,11 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [authGuard] 
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin/users',
+    component: AdminUsersComponent,
+    canActivate: [adminGuard] //admin
   }
 ];

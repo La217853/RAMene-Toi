@@ -24,6 +24,10 @@ export class NavbarComponent {
     this.router.navigate(['/profile']);
   }
 
+  navigateToAdmin() {
+    this.router.navigate(['/admin/users']);
+  }
+
   logout() {
     this.authService.logout();
   }
