@@ -34,6 +34,13 @@
       </button>
     </div>
 
+ @if (authService.currentUserSig()?.role?.nom_role === 'ADMIN') {
+        <button class="nav-item admin-button">
+          <img src="/Images/gear.png" class="logo-cuisine">
+          Administration
+        </button>
+      }
+    
  
     <div class="navbar-profile">
       <button class="profile-button">

@@ -90,10 +90,17 @@ export class AuthService {
   }
 
 
- 
-
   /**Recup tous les favoris d'un utilisateur **/
   getAllFavoriteRecettes(id: number): Observable<any[]> {
       return this.http.get<any[]>(`${this.apiUrl}/api/Utilisateurs/${id}/favoris`);
+  }
+
+  /**Récupérer les détails complets utilisateur qui est co */
+  getUserById(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/Utilisateurs/${userId}`);
+  }
+
+  PutProfile(userId: number, updatedData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/Utilisateurs/${userId}`, updatedData);
   }
 }
