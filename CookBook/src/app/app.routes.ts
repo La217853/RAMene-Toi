@@ -5,6 +5,7 @@ import { ProfileComponent } from './Page/profile/profile/profile';
 import { DashboardComponent } from './Page/dashboard/dashboard';
 import { inject } from '@angular/core';
 import { AuthService } from './Services/auth';
+import { RecetteDetailsComponent } from './Page/details-recette/details-recette';
 
 
 const authGuard = () => {
@@ -30,5 +31,10 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [authGuard] 
+  },
+  { path: 'recette/:id',
+    component: RecetteDetailsComponent,
+    canActivate: [authGuard] 
   }
+  
 ];

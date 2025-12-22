@@ -1,12 +1,23 @@
 export interface Recette {
   id: number;
-  titre: string;
-  description?: string;
-  tempsPreparation?: number;
-  tempsCuisson?: number;
-  difficulte?: string;
-  portions?: number;
-  categorieId?: number;
+  titre_recette: string;
+  description_recette?: string;
+  photo_recette?: string;
   utilisateurId: number;
-  dateCreation?: Date;
+  categorieId?: number;
 }
+
+
+
+export interface Etape {
+  id: number;
+  titre_etape: string;
+  description_etape: string;
+}
+
+export interface Categorie {
+  id: number;
+  nom: string;
+}
+
+
