@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IngredientService } from '../ingredient-service';
-import { Ingredient } from '../models/ingredient.models';
+import { Ingredient } from '../Models/ingredient.models';
 
 @Component({
   selector: 'app-ingredient',

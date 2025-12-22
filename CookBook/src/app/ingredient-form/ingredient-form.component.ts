@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IngredientService } from '../ingredient-service';
-import { Ingredient } from '../models/ingredient.models'; 
+import { Ingredient } from '../Models/ingredient.models'; 
 
 @Component({
   selector: 'app-ingredient-form',
