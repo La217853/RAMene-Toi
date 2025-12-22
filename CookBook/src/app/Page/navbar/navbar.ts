@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
 export class NavbarComponent {
   constructor(
     private router: Router,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   navigateToHome(){
@@ -22,6 +22,10 @@ export class NavbarComponent {
 
   navigateToProfile() {
     this.router.navigate(['/profile']);
+  }
+
+  navigateToAdmin() {
+    this.router.navigate(['/admin/users']);
   }
 
   logout() {

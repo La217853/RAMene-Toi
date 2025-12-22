@@ -82,41 +82,142 @@
 
 .stats {
 	float: left;
-	
+
 	.box {
 		box-sizing: border-box;
-    
+
 		width: 320px;
 		height: 249px;
 		background: #e3ddda;
 		text-align: center;
 		padding-top: 28px;
 		transition: all .4s ease-in-out;
-		
+
 		&:hover {
 			background: #b9b9b9;
 			cursor: pointer;
 		}
-		
+
 		&:nth-child(2) {
 			margin: 1px 0;
 		}
-		
+
 	}
-	
+
 	span {
 		display: block;
 	}
-	
+
 	.value {
         margin-top: 25%;
 		font-size: 25px;
 		font-weight: 600;
-       
+
 	}
-	
+
 	.parameter {
 		font-size: 13px;
 	}
-	
+
+}
+
+/* Styles pour le formulaire d'édition */
+.edit-form {
+	width: 100%;
+	padding: 10px;
+
+	.form-group {
+		margin-bottom: 15px;
+		text-align: left;
+
+		label {
+			display: block;
+			font-size: 12px;
+			font-weight: 600;
+			margin-bottom: 5px;
+			color: #333;
+		}
+
+		.form-control {
+			width: 100%;
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 13px;
+			box-sizing: border-box;
+			transition: border-color 0.3s;
+
+			&:focus {
+				outline: none;
+				border-color: #000000;
+			}
+		}
+
+		.error {
+			display: block;
+			color: #d9534f;
+			font-size: 11px;
+			margin-top: 3px;
+		}
+	}
+
+	.form-buttons {
+		display: flex;
+		gap: 10px;
+		margin-top: 20px;
+
+		button {
+			flex: 1;
+			padding: 10px;
+			border: none;
+			border-radius: 5px;
+			font-size: 13px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+
+			&.btn-save {
+				background: #000000;
+				color: #fff;
+
+				&:hover {
+					background: #333;
+				}
+			}
+
+			&.btn-cancel {
+				background: #e3ddda;
+				color: #000000;
+
+				&:hover {
+					background: #ccc;
+				}
+			}
+		}
+	}
+}
+
+.put{
+	margin-top: 5px;
+	width: 100px;
+	height: 30px;
+	border-radius: 15px;
+}
+.msg {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.msg.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.msg.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }

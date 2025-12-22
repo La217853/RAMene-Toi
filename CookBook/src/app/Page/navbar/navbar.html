@@ -17,23 +17,31 @@
         Découvrir
       </button>
 
-      <button class="nav-item">
-     <img src="/Images/cookbook.png" class="logo-cuisine">
-        Mes recettes
-      </button>
+      @if (authService.currentUserSig()?.role?.nom_role !== 'Admin') {
+        <button class="nav-item">
+          <img src="/Images/cookbook.png" class="logo-cuisine">
+          Mes recettes
+        </button>
 
-      <button class="nav-item">
-      <img src="/Images/low heat.png" class="logo-cuisine">
-        Ajouter une recette
-      </button>
+        <button class="nav-item">
+          <img src="/Images/low heat.png" class="logo-cuisine">
+          Ajouter une recette
+        </button>
 
-      <button class="nav-item">
+        <button class="nav-item">
           <img src="/Images/favoris.png" class="logo-cuisine">
+          mes favoris
+        </button>
+      }
 
-        mes favoris
-      </button>
+      @if (authService.currentUserSig()?.role?.nom_role === 'Admin') {
+        <button class="nav-item admin-button" (click)="navigateToAdmin()">
+      
+          Administration
+        </button>
+      }
     </div>
-
+    
  
     <div class="navbar-profile">
       <button class="profile-button">
