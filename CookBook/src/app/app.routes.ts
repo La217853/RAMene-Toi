@@ -4,6 +4,7 @@ import { RegisterComponent } from './Page/register/register/register';
 import { ProfileComponent } from './Page/profile/profile/profile';
 import { DashboardComponent } from './Page/dashboard/dashboard';
 import { AdminUsersComponent } from './Page/admin-users/admin-users';
+import { AddRecetteComponent } from './Page/add-recette/add-recette';
 import { inject } from '@angular/core';
 import { AuthService } from './Services/auth';
 
@@ -47,6 +48,11 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'add-recette',
+    component: AddRecetteComponent,
     canActivate: [authGuard]
   },
   {

@@ -9,11 +9,110 @@ import { Recette } from '../Models/recette.model';
 export class RecetteService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:5230/api/Recettes';
+  private baseUrl = 'http://localhost:5230/api';
 
   /**
    * Récupère toutes les recettes d'un utilisateur
    */
   getRecettesByUtilisateur(utilisateurId: number): Observable<Recette[]> {
     return this.http.get<Recette[]>(`${this.apiUrl}/Utilisateur/${utilisateurId}`);
+  }
+
+  /**
+   * Récupère toutes les recettes
+   */
+  getAllRecettes(): Observable<Recette[]> {
+    return this.http.get<Recette[]>(this.apiUrl);
+  }
+
+  /**
+   * Récupère une recette par ID
+   */
+  getRecetteById(id: number): Observable<Recette> {
+    return this.http.get<Recette>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * Récupère toutes les recettes d'une catégorie
+   */
+  getRecettesByCategorie(categorieId: number): Observable<Recette[]> {
+    return this.http.get<Recette[]>(`${this.apiUrl}/Categorie/${categorieId}`);
+  }
+
+  /**
+   * Crée une nouvelle recette
+   */
+  createRecette(recetteData: Partial<Recette>): Observable<Recette> {
+    return this.http.post<Recette>(this.apiUrl, recetteData);
+  }
+
+  /**
+   * Met à jour une recette
+   */
+  updateRecette(id: number, recetteData: Partial<Recette>): Observable<Recette> {
+    return this.http.put<Recette>(`${this.apiUrl}/${id}`, recetteData);
+  }
+
+  /**
+   * Supprime une recette
+   */
+  deleteRecette(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * Récupère toutes les catégories
+   */
+  getCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/Categories`);
+  }
+
+  /**
+   * Crée une nouvelle catégorie
+   */
+  createCategorie(categorieData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Categories`, categorieData);
+  }
+
+  /**
+   * Récupère une catégorie par ID
+   */
+  getCategorieById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Categories/${id}`);
+  }
+
+  /**
+   * Crée une nouvelle étape
+   */
+  createEtape(etapeData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Etapes`, etapeData);
+  }
+
+  /**
+   * Récupère tous les ingrédients
+   */
+  getAllIngredients(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/Ingredients`);
+  }
+
+  /**
+   * Crée un nouvel ingrédient
+   */
+  createIngredient(ingredientData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Ingredients`, ingredientData);
+  }
+
+  /**
+   * Crée une liaison RecetteIngredient
+   */
+  createRecetteIngredient(recetteIngredientData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/RecetteIngredients`, recetteIngredientData);
+  }
+
+  /**
+   * Récupère tous les ingrédients d'une recette
+   */
+  getRecetteIngredients(recetteId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/RecetteIngredients/Recette/${recetteId}`);
   }
 }
