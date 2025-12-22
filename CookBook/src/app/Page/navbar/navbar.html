@@ -1,7 +1,7 @@
-    <!-- si pas login alors pas de navbar -->
-@if (isAuthenticated()) {
+  <!-- si pas login alors pas de navbar -->
+  <ng-container *ngIf="isAuthenticated()">
 
-<nav class="navbar">
+  <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-logo" (click)="navigateToHome()">
       <span class="navbar-logo-text" >
@@ -17,13 +17,13 @@
         Découvrir
       </button>
 
-      @if (authService.currentUserSig()?.role?.nom_role !== 'Admin') {
+      <ng-container *ngIf="authService.currentUserSig()?.role?.nom_role !== 'Admin'">
         <button class="nav-item">
           <img src="/Images/cookbook.png" class="logo-cuisine">
           Mes recettes
         </button>
 
-        <button class="nav-item">
+        <button class="nav-item" (click)="navigateToAddRecette()">
           <img src="/Images/low heat.png" class="logo-cuisine">
           Ajouter une recette
         </button>
@@ -32,14 +32,11 @@
           <img src="/Images/favoris.png" class="logo-cuisine">
           mes favoris
         </button>
-      }
+      </ng-container>
 
-      @if (authService.currentUserSig()?.role?.nom_role === 'Admin') {
-        <button class="nav-item admin-button" (click)="navigateToAdmin()">
-      
-          Administration
-        </button>
-      }
+      <button *ngIf="authService.currentUserSig()?.role?.nom_role === 'Admin'" class="nav-item admin-button" (click)="navigateToAdmin()">
+        Administration
+      </button>
     </div>
     
  
@@ -58,4 +55,4 @@
     </div>
   </div>
 </nav>
-}
+</ng-container>

@@ -189,9 +189,9 @@ export class AddRecetteComponent implements OnInit {
         // Préparer les étapes
         const etapesToCreate = this.etapesArray.value.map((etape: any, index: number) => {
           const etapeData = {
-            titre_etape: index + 1,
+            titre_etape: (index + 1).toString(),
             description_etape: etape.description_etape.trim(),
-            id_recette: recetteId
+            recetteId: recetteId
           };
           console.log('📝 Étape', index + 1, ':', etapeData);
           return etapeData;

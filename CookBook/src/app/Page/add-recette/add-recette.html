@@ -54,8 +54,8 @@
             class="btn-retry"
             (click)="loadCategories()"
             *ngIf="categories.length === 0"
-            title="Recharger les catégories">
-            <i class="fas fa-redo"></i>
+            title="Recharger les catégories"
+            aria-label="Recharger les catégories">
           </button>
         </div>
         <select 
@@ -84,25 +84,27 @@
             class="file-input"
             (change)="onImageSelected($event)">
           <label for="photo_file" class="file-label">
-            <i class="fas fa-image"></i> Cliquez pour sélectionner une image
+            Cliquez pour sélectionner une image
           </label>
         </div>
 
         <!-- Prévisualisation de l'image -->
         <div *ngIf="imagePreview" class="image-preview">
           <img [src]="imagePreview" alt="Prévisualisation">
-          <button type="button" class="btn-remove-image" (click)="removeImage()"><i class="fas fa-trash-alt"></i> Supprimer</button>
+          <button type="button" class="btn-remove-image" (click)="removeImage()">
+            <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+            Supprimer
+          </button>
         </div>
 
         <div *ngIf="!imagePreview && !selectedFile" class="upload-info">
-          <p><i class="fas fa-info-circle"></i> Formats acceptés: JPG, PNG, GIF | Max: 5MB</p>
+          <p>Formats acceptés: JPG, PNG, GIF</p>
         </div>
       </div>
 
       <!-- Étapes -->
       <div class="section-header">
         <h3>Étapes de préparation</h3>
-        <button type="button" class="btn-add" (click)="addEtape()"><i class="fas fa-plus"></i> Ajouter une étape</button>
       </div>
 
       <div formArrayName="etapes" class="form-array">
@@ -113,7 +115,9 @@
         <div *ngFor="let etape of etapesArray.controls; let i = index" [formGroupName]="i" class="array-item">
           <div class="array-header">
             <h4>Étape {{ i + 1 }}</h4>
-            <button type="button" class="btn-remove" (click)="removeEtape(i)"><i class="fas fa-trash-alt"></i></button>
+            <button type="button" class="btn-remove" (click)="removeEtape(i)" aria-label="Supprimer l'étape">
+              <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+            </button>
           </div>
 
           <div class="form-group">
@@ -131,11 +135,13 @@
           </div>
         </div>
       </div>
+      <div class="section-footer">
+        <button type="button" class="btn-add" (click)="addEtape()"><span class="icon-plus" aria-hidden="true">+</span> Ajouter une étape</button>
+      </div>
 
       <!-- Ingrédients -->
       <div class="section-header">
         <h3>Ingrédients</h3>
-        <button type="button" class="btn-add" (click)="addIngredient()"><i class="fas fa-plus"></i> Ajouter un ingrédient</button>
       </div>
 
       <div formArrayName="ingredients" class="form-array">
@@ -146,7 +152,9 @@
         <div *ngFor="let ingredient of ingredientsArray.controls; let i = index" [formGroupName]="i" class="array-item">
           <div class="array-header">
             <h4>Ingrédient {{ i + 1 }}</h4>
-            <button type="button" class="btn-remove" (click)="removeIngredient(i)"><i class="fas fa-trash-alt"></i></button>
+            <button type="button" class="btn-remove" (click)="removeIngredient(i)" aria-label="Supprimer l'ingrédient">
+              <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+            </button>
           </div>
 
           <div class="form-row">
@@ -180,6 +188,9 @@
           </div>
         </div>
       </div>
+      <div class="section-footer">
+        <button type="button" class="btn-add" (click)="addIngredient()"><span class="icon-plus" aria-hidden="true">+</span> Ajouter un ingrédient</button>
+      </div>
 
       <!-- Boutons -->
       <div class="form-actions">
@@ -187,7 +198,7 @@
           type="submit" 
           class="btn btn-primary"
           [disabled]="loading">
-          <i class="fas fa-check"></i>
+          
           <span *ngIf="loading">Création en cours...</span>
           <span *ngIf="!loading">Ajouter la recette</span>
         </button>
@@ -196,7 +207,7 @@
           class="btn btn-secondary"
           (click)="cancel()"
           [disabled]="loading">
-          <i class="fas fa-times"></i> Annuler
+          Annuler
         </button>
       </div>
     </form>
