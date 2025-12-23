@@ -1,0 +1,232 @@
+<div class="add-recette-container">
+  <div class="add-recette-wrapper">
+    <h1>Ajouter une nouvelle recette</h1>
+
+    <!-- Messages de succès/erreur -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      <p>{{ successMessage }}</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="recetteForm" (ngSubmit)="onSubmit()" class="recette-form">
+      
+      <!-- Titre -->
+      <div class="form-group">
+        <label for="titre_recette">Titre de la recette *</label>
+        <input 
+          type="text" 
+          id="titre_recette" 
+          formControlName="titre_recette"
+          class="form-control"
+          [class.is-invalid]="submitted && titre_recette?.invalid"
+          placeholder="Ex: Gâteau au chocolat">
+        <div *ngIf="submitted && titre_recette?.invalid" class="error-message">
+          <p *ngIf="titre_recette?.errors?.['required']">Le titre est obligatoire</p>
+          <p *ngIf="titre_recette?.errors?.['minlength']">Le titre doit contenir au moins 3 caractères</p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description_recette">Description *</label>
+        <textarea 
+          id="description_recette" 
+          formControlName="description_recette"
+          class="form-control"
+          [class.is-invalid]="submitted && description_recette?.invalid"
+          placeholder="Décrivez votre recette..."
+          rows="5"></textarea>
+        <div *ngIf="submitted && description_recette?.invalid" class="error-message">
+          <p *ngIf="description_recette?.errors?.['required']">La description est obligatoire</p>
+        </div>
+      </div>
+
+      <!-- Catégorie -->
+      <div class="category-section">
+        <div class="category-header-with-retry">
+          <label for="categorieId">Catégorie *</label>
+          <button 
+            type="button" 
+            class="btn-retry"
+            (click)="loadCategories()"
+            *ngIf="categories.length === 0"
+            title="Recharger les catégories"
+            aria-label="Recharger les catégories">
+          </button>
+        </div>
+        <select 
+          id="categorieId" 
+          formControlName="categorieId"
+          class="form-control category-select"
+          [class.is-invalid]="submitted && categorieId?.invalid">
+          <option value="">{{ categories.length === 0 ? 'Aucune catégorie disponible' : 'Sélectionnez une catégorie' }}</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">
+            {{ cat.nom_categorie }}
+          </option>
+        </select>
+        <div *ngIf="submitted && categorieId?.invalid" class="error-message">
+          <p *ngIf="categorieId?.errors?.['required']">La catégorie est obligatoire</p>
+        </div>
+      </div>
+
+      <!-- Photo (optionnel) -->
+      <div class="form-group">
+        <label for="photo_file">Photo de la recette (optionnel)</label>
+
+        <div class="image-options">
+          <div class="image-upload">
+            <input
+              type="file"
+              id="photo_file"
+              accept="image/*"
+              class="file-input"
+              (change)="onImageSelected($event)">
+            <label for="photo_file" class="file-label">
+              📁 Uploader une image
+            </label>
+          </div>
+
+          <button type="button" class="btn-mock-image" (click)="useMockImageInstead()">
+            🎨 Utiliser une image de test
+          </button>
+        </div>
+
+        <!-- Prévisualisation de l'image -->
+        <div *ngIf="imagePreview" class="image-preview">
+          <img [src]="imagePreview" alt="Prévisualisation">
+          <div class="image-actions">
+            <button
+              *ngIf="useMockImage"
+              type="button"
+              class="btn-change-mock"
+              (click)="changeMockImage()">
+              🔄 Changer l'image
+            </button>
+            <button type="button" class="btn-remove-image" (click)="removeImage()">
+              <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+              Supprimer
+            </button>
+          </div>
+          <p *ngIf="useMockImage" class="mock-info">✨ Image de test utilisée</p>
+        </div>
+
+        <div *ngIf="!imagePreview && !selectedFile" class="upload-info">
+          <p>Formats acceptés: JPG, PNG, GIF ou utilisez une image de test</p>
+        </div>
+      </div>
+
+      <!-- Étapes -->
+      <div class="section-header">
+        <h3>Étapes de préparation</h3>
+      </div>
+
+      <div formArrayName="etapes" class="form-array">
+        <div *ngIf="etapesArray.length === 0" class="empty-message">
+          <p>Aucune étape ajoutée. Cliquez sur le bouton ci-dessus pour en ajouter.</p>
+        </div>
+
+        <div *ngFor="let etape of etapesArray.controls; let i = index" [formGroupName]="i" class="array-item">
+          <div class="array-header">
+            <h4>Étape {{ i + 1 }}</h4>
+            <button type="button" class="btn-remove" (click)="removeEtape(i)" aria-label="Supprimer l'étape">
+              <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label for="description_etape_{{ i }}">Description de l'étape *</label>
+            <textarea 
+              [id]="'description_etape_' + i" 
+              formControlName="description_etape"
+              class="form-control"
+              [class.is-invalid]="submitted && etape.get('description_etape')?.invalid"
+              placeholder="Décrivez cette étape..."
+              rows="3"></textarea>
+            <div *ngIf="submitted && etape.get('description_etape')?.invalid" class="error-message">
+              <p *ngIf="etape.get('description_etape')?.errors?.['required']">La description est obligatoire</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-footer">
+        <button type="button" class="btn-add" (click)="addEtape()"><span class="icon-plus" aria-hidden="true">+</span> Ajouter une étape</button>
+      </div>
+
+      <!-- Ingrédients -->
+      <div class="section-header">
+        <h3>Ingrédients</h3>
+      </div>
+
+      <div formArrayName="ingredients" class="form-array">
+        <div *ngIf="ingredientsArray.length === 0" class="empty-message">
+          <p>Aucun ingrédient ajouté. Cliquez sur le bouton ci-dessus pour en ajouter.</p>
+        </div>
+
+        <div *ngFor="let ingredient of ingredientsArray.controls; let i = index" [formGroupName]="i" class="array-item">
+          <div class="array-header">
+            <h4>Ingrédient {{ i + 1 }}</h4>
+            <button type="button" class="btn-remove" (click)="removeIngredient(i)" aria-label="Supprimer l'ingrédient">
+              <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nom_ingredient_{{ i }}">Nom de l'ingrédient *</label>
+              <input 
+                type="text" 
+                [id]="'nom_ingredient_' + i" 
+                formControlName="nom_ingredient"
+                class="form-control"
+                [class.is-invalid]="submitted && ingredient.get('nom_ingredient')?.invalid"
+                placeholder="Ex: Farine">
+              <div *ngIf="submitted && ingredient.get('nom_ingredient')?.invalid" class="error-message">
+                <p *ngIf="ingredient.get('nom_ingredient')?.errors?.['required']">Le nom est obligatoire</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="quantite_{{ i }}">Quantité *</label>
+              <input 
+                type="text" 
+                [id]="'quantite_' + i" 
+                formControlName="quantite"
+                class="form-control"
+                [class.is-invalid]="submitted && ingredient.get('quantite')?.invalid"
+                placeholder="Ex: 2 tasses">
+              <div *ngIf="submitted && ingredient.get('quantite')?.invalid" class="error-message">
+                <p *ngIf="ingredient.get('quantite')?.errors?.['required']">La quantité est obligatoire</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-footer">
+        <button type="button" class="btn-add" (click)="addIngredient()"><span class="icon-plus" aria-hidden="true">+</span> Ajouter un ingrédient</button>
+      </div>
+
+      <!-- Boutons -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="loading">
+          
+          <span *ngIf="loading">Création en cours...</span>
+          <span *ngIf="!loading">Ajouter la recette</span>
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="cancel()"
+          [disabled]="loading">
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

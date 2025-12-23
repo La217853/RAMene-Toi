@@ -8,7 +8,7 @@ import { AuthService } from '../../Services/auth';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
   constructor(
@@ -26,6 +26,10 @@ export class NavbarComponent {
 
   navigateToAdmin() {
     this.router.navigate(['/admin/users']);
+  }
+
+  navigateToAddRecette() {
+    this.router.navigate(['/add-recette']);
   }
 
   logout() {
