@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RecetteService } from '../../Services/recette.service';
 import { AuthService } from '../../Services/auth';
+import { MockImagesService } from '../../Services/mock-images.service';
 import { forkJoin, switchMap, of } from 'rxjs';
 
 @Component({
@@ -19,6 +20,7 @@ export class AddRecetteComponent implements OnInit {
   private recetteService = inject(RecetteService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  mockImages = inject(MockImagesService);
 
   recetteForm!: FormGroup;
   categories: any[] = [];
@@ -29,6 +31,7 @@ export class AddRecetteComponent implements OnInit {
   allIngredients: any[] = [];
   imagePreview: string | null = null;
   selectedFile: File | null = null;
+  useMockImage = false; // Pour basculer entre upload réel et mock
 
   ngOnInit() {
     this.initializeForm();
@@ -359,10 +362,27 @@ export class AddRecetteComponent implements OnInit {
   removeImage() {
     this.imagePreview = null;
     this.selectedFile = null;
+    this.useMockImage = false;
     this.recetteForm.patchValue({ photo_recette: '' });
     const fileInput = document.getElementById('photo_file') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = '';
     }
+  }
+
+  // Utiliser une image mock au lieu d'uploader
+  useMockImageInstead() {
+    const mockImageUrl = this.mockImages.getRandomImage();
+    this.imagePreview = mockImageUrl;
+    this.useMockImage = true;
+    this.selectedFile = null;
+    this.recetteForm.patchValue({ photo_recette: mockImageUrl });
+  }
+
+  // Changer l'image mock
+  changeMockImage() {
+    const mockImageUrl = this.mockImages.getRandomImage();
+    this.imagePreview = mockImageUrl;
+    this.recetteForm.patchValue({ photo_recette: mockImageUrl });
   }
 }

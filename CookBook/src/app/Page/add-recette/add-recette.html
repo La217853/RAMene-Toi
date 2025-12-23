@@ -76,29 +76,46 @@
       <!-- Photo (optionnel) -->
       <div class="form-group">
         <label for="photo_file">Photo de la recette (optionnel)</label>
-        <div class="image-upload">
-          <input 
-            type="file" 
-            id="photo_file" 
-            accept="image/*"
-            class="file-input"
-            (change)="onImageSelected($event)">
-          <label for="photo_file" class="file-label">
-            Cliquez pour sélectionner une image
-          </label>
+
+        <div class="image-options">
+          <div class="image-upload">
+            <input
+              type="file"
+              id="photo_file"
+              accept="image/*"
+              class="file-input"
+              (change)="onImageSelected($event)">
+            <label for="photo_file" class="file-label">
+              📁 Uploader une image
+            </label>
+          </div>
+
+          <button type="button" class="btn-mock-image" (click)="useMockImageInstead()">
+            🎨 Utiliser une image de test
+          </button>
         </div>
 
         <!-- Prévisualisation de l'image -->
         <div *ngIf="imagePreview" class="image-preview">
           <img [src]="imagePreview" alt="Prévisualisation">
-          <button type="button" class="btn-remove-image" (click)="removeImage()">
-            <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
-            Supprimer
-          </button>
+          <div class="image-actions">
+            <button
+              *ngIf="useMockImage"
+              type="button"
+              class="btn-change-mock"
+              (click)="changeMockImage()">
+              🔄 Changer l'image
+            </button>
+            <button type="button" class="btn-remove-image" (click)="removeImage()">
+              <svg class="icon-trash-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 6h18v2H3V6zm2 3h14l-1 11H6L5 9zm5-7h4l1 1h5v2H3V3h5l1-1z"/></svg>
+              Supprimer
+            </button>
+          </div>
+          <p *ngIf="useMockImage" class="mock-info">✨ Image de test utilisée</p>
         </div>
 
         <div *ngIf="!imagePreview && !selectedFile" class="upload-info">
-          <p>Formats acceptés: JPG, PNG, GIF</p>
+          <p>Formats acceptés: JPG, PNG, GIF ou utilisez une image de test</p>
         </div>
       </div>
 

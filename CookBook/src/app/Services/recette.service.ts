@@ -19,7 +19,6 @@ export class RecetteService {
   }
 
   /**
-<<<<<<< HEAD
    * Upload une image pour une recette
    */
   uploadRecetteImage(recetteId: number, file: File): Observable<{ imageUrl: string }> {
@@ -33,8 +32,6 @@ export class RecetteService {
   }
 
   /**
-=======
->>>>>>> 7e09d5e920580196c6a58ced267b83341fc08fd5
    * Récupère toutes les recettes
    */
   getAllRecettes(): Observable<Recette[]> {
@@ -42,23 +39,13 @@ export class RecetteService {
   }
 
   /**
-<<<<<<< HEAD
    * Récupère une recette par son ID
-=======
-   * Récupère une recette par ID
->>>>>>> 7e09d5e920580196c6a58ced267b83341fc08fd5
    */
   getRecetteById(id: number): Observable<Recette> {
     return this.http.get<Recette>(`${this.apiUrl}/${id}`);
   }
 
   /**
-<<<<<<< HEAD
-   * Crée une nouvelle recette
-   */
-  createRecette(recette: Partial<Recette>): Observable<Recette> {
-    return this.http.post<Recette>(this.apiUrl, recette);
-=======
    * Récupère toutes les recettes d'une catégorie
    */
   getRecettesByCategorie(categorieId: number): Observable<Recette[]> {
@@ -70,19 +57,13 @@ export class RecetteService {
    */
   createRecette(recetteData: Partial<Recette>): Observable<Recette> {
     return this.http.post<Recette>(this.apiUrl, recetteData);
->>>>>>> 7e09d5e920580196c6a58ced267b83341fc08fd5
   }
 
   /**
    * Met à jour une recette
    */
-<<<<<<< HEAD
-  updateRecette(id: number, recette: Partial<Recette>): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, recette);
-=======
   updateRecette(id: number, recetteData: Partial<Recette>): Observable<Recette> {
     return this.http.put<Recette>(`${this.apiUrl}/${id}`, recetteData);
->>>>>>> 7e09d5e920580196c6a58ced267b83341fc08fd5
   }
 
   /**
@@ -91,8 +72,6 @@ export class RecetteService {
   deleteRecette(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-<<<<<<< HEAD
-=======
 
   /**
    * Récupère toutes les catégories
@@ -149,5 +128,4 @@ export class RecetteService {
   getRecetteIngredients(recetteId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/RecetteIngredients/Recette/${recetteId}`);
   }
->>>>>>> 7e09d5e920580196c6a58ced267b83341fc08fd5
 }
