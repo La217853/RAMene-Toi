@@ -7,12 +7,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
 
   if (token) {
-    const cloned = req.clone({
+     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
-    return next(cloned);
   }
-  return next(req);
+  return next(req).pipe(
+  catchError((error: HttpErrorResponse) => {
+   if (error.status === 401) 
+   { 
+authService.logout();
+}
+return throwError(() => error);
+})
+    );
 };
+
