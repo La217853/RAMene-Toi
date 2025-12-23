@@ -7,6 +7,7 @@ import { AdminUsersComponent } from './Page/admin-users/admin-users';
 import { AddRecetteComponent } from './Page/add-recette/add-recette';
 import { inject } from '@angular/core';
 import { AuthService } from './Services/auth';
+import { RecetteDetailsComponent } from './Page/details-recette/details-recette';
 
 
 const authGuard = () => {
@@ -58,6 +59,11 @@ export const routes: Routes = [
   {
     path: 'admin/users',
     component: AdminUsersComponent,
-    canActivate: [adminGuard] //admin
+    canActivate: [adminGuard] //admin 
+  },
+  { path: 'recette/:id',
+    component: RecetteDetailsComponent,
+    canActivate: [authGuard] 
   }
+  
 ];

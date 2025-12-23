@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IngredientService } from '../ingredient-service';
+import { IngredientService } from '../Services/ingredient-service';
 import { Ingredient } from '../Models/ingredient.models';
 
 @Component({
@@ -28,7 +28,8 @@ export class IngredientComponent implements OnInit {
 
   addIngredient(): void {
     const newIngredient: Ingredient = {
-      name: 'Nouvel ingrédient'
+      
+      nom_ingredient: 'Nouvel ingrédient'
     };
     this.ingredientService.addIngredient(newIngredient).subscribe(addedIngredient => {
       this.ingredients.push(addedIngredient);

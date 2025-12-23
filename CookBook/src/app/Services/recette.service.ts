@@ -1,7 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Recette } from '../Models/recette.model';
+import { Recette,Etape,Categorie } from '../Models/recette.model';
+import { User } from '../Models/user.model';
+import { Ingredient, IngredientQuantite } from '../Models/ingredient.models';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,18 @@ export class RecetteService {
    */
   getRecettesByUtilisateur(utilisateurId: number): Observable<Recette[]> {
     return this.http.get<Recette[]>(`${this.apiUrl}/Utilisateur/${utilisateurId}`);
+  }
+  
+  getEtapes(id: number): Observable<Etape[]> { 
+    return this.http.get<Etape[]>(`${this.baseUrl}/Etapes/${id}`);
+  }
+  
+  getAuteur(id: number): Observable<User> { 
+    return this.http.get<User>(`${this.baseUrl}/Utilisateurs/${id}`); 
+  }
+
+  getIngredient(id: number) { 
+    return this.http.get<Ingredient>(`${this.baseUrl}/Ingredients/${id}`); 
   }
 
   /**
