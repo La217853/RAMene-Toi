@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ng serve)",
+      "Bash(if exist .angular rmdir /s /q .angular)",
+      "Bash(if exist out-tsc rmdir /s /q out-tsc)",
+      "Bash(npm install)",
+      "Bash(timeout 15 ng serve:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find . -name \"*.ts\" -exec sh -c 'echo \"\"=== {} ===\"\" && head -5 {}' ;)"
+    ]
+  }
+}
