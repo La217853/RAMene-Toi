@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecetteService } from '../../Services/recette.service';
-import { Etape, Recette } from '../../Models/recette.model';
+import { Recette } from '../../Models/recette.model';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { IngredientQuantite } from '../../Models/ingredient.models';
@@ -20,6 +20,7 @@ export class RecetteDetailsComponent implements OnInit {
   ingredients: IngredientQuantite[] = [];
   loading = true;
   error = false;
+  hasImage = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,9 +38,18 @@ export class RecetteDetailsComponent implements OnInit {
   this.recette = data.recette;
   this.ingredients = data.ingredients;
 
-  if (this.recette.photo_recette) {
-    this.recette.photo_recette = `assets/images/${this.recette.photo_recette}`;
+  const photo = this.recette?.photo_recette?.trim();
+
+  if (!photo) {
+    this.recette.photo_recette = undefined;
   }
+  else if (photo.startsWith('http')) {
+    this.recette.photo_recette = photo;
+  }
+  else {
+    this.recette.photo_recette = `assets/images/${photo}`;
+  }
+
 
   for (let ing of this.ingredients) {
     ing.detail = await this.recetteService.getIngredient(ing.ingredientId).toPromise();
@@ -53,6 +63,10 @@ export class RecetteDetailsComponent implements OnInit {
     }
   });
 }
+
+onImageError() { 
+  this.hasImage = false;
+} 
 
 
 }
