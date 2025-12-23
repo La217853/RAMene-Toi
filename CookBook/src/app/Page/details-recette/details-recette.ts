@@ -30,8 +30,8 @@ export class RecetteDetailsComponent implements OnInit {
   const id = Number(this.route.snapshot.paramMap.get('id'));
 
   forkJoin({
-    recette: this.recetteService.getRecette(id),
-    ingredients: this.recetteService.getIngredients(id)
+    recette: this.recetteService.getRecetteById(id),
+    ingredients: this.recetteService.getRecetteIngredients(id)
   }).subscribe({
     next: async (data) => {
   this.recette = data.recette;
