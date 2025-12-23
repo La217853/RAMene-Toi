@@ -1,23 +1,25 @@
 <div class="recette-container"> 
-<div class="recette-header">
-  <div class="recette-image">
-    <img [src]="recette?.photo_recette" alt="riz-poulet">
-  </div>
+  <div class="recette-header"> 
 
-  <div class="recette-info">
-    <h1>{{ recette?.titre_recette }}</h1>
-    <p>{{ recette?.description_recette }}</p>
+    <div class="recette-image" *ngIf="recette?.photo_recette">
+      <img [src]="recette?.photo_recette">
+    </div>
 
-    <div class="ingredients" *ngIf="ingredients.length > 0">
-      <h2>Ingrédients</h2>
-      <ul>
-        <li *ngFor="let ing of ingredients">
-          {{ ing.detail?.nom_ingredient }} — {{ ing.quantite }}
-        </li>
-      </ul>
+
+    <div class="recette-info">
+      <h1>{{ recette?.titre_recette }}</h1>
+      <p>{{ recette?.description_recette }}</p>
+
+      <div class="ingredients" *ngIf="ingredients.length > 0">
+        <h2>Ingrédients</h2>
+        <ul>
+          <li *ngFor="let ing of ingredients">
+            {{ ing.detail?.nom_ingredient }} — {{ ing.quantite }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
 
 <div class="etapes">
   <h2>Étapes</h2>
