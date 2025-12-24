@@ -10,6 +10,7 @@ import { AuthService } from './Services/auth';
 import { RecetteDetailsComponent } from './Page/details-recette/details-recette';
 import { FavoritesComponent } from './Page/favorites/favorites';
 import { MyRecipesComponent } from './Page/my-recipes/my-recipes';
+import { DecouvrirComponent } from './Page/decouvrir/decouvrir';
 
 
 const authGuard = () => {
@@ -40,14 +41,10 @@ const adminGuard = () => {
 };
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'decouvrir', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard] // Protection de la route
-  },
+
   {
     path: 'favoris',
     component: FavoritesComponent,
@@ -73,9 +70,15 @@ export const routes: Routes = [
     component: AdminUsersComponent,
     canActivate: [adminGuard] //admin 
   },
-  { path: 'recette/:id',
+  { 
+    path: 'recette/:id',
     component: RecetteDetailsComponent,
     canActivate: [authGuard] 
+  },
+  {
+    path: 'decouvrir',
+    component: DecouvrirComponent,
+    canActivate: [authGuard]
   }
   
 ];
