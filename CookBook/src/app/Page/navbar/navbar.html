@@ -18,7 +18,7 @@
       </button>
 
       <ng-container *ngIf="authService.currentUserSig()?.role?.nom_role !== 'Admin'">
-        <button class="nav-item">
+        <button class="nav-item" (click)="navigateToMyRecipes()">
           <img src="/Images/cookbook.png" class="logo-cuisine">
           Mes recettes
         </button>
@@ -28,7 +28,7 @@
           Ajouter une recette
         </button>
 
-        <button class="nav-item">
+        <button class="nav-item" (click)="navigateToFavorites()">
           <img src="/Images/favoris.png" class="logo-cuisine">
           mes favoris
         </button>

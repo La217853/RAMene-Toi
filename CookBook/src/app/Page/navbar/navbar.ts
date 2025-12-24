@@ -32,6 +32,14 @@ export class NavbarComponent {
     this.router.navigate(['/add-recette']);
   }
 
+  navigateToFavorites() {
+    this.router.navigate(['/favoris']);
+  }
+
+  navigateToMyRecipes() {
+    this.router.navigate(['/mes-recettes']);
+  }
+
   logout() {
     this.authService.logout();
   }

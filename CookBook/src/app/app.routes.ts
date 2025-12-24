@@ -8,6 +8,8 @@ import { AddRecetteComponent } from './Page/add-recette/add-recette';
 import { inject } from '@angular/core';
 import { AuthService } from './Services/auth';
 import { RecetteDetailsComponent } from './Page/details-recette/details-recette';
+import { FavoritesComponent } from './Page/favorites/favorites';
+import { MyRecipesComponent } from './Page/my-recipes/my-recipes';
 
 
 const authGuard = () => {
@@ -45,6 +47,16 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard] // Protection de la route
+  },
+  {
+    path: 'favoris',
+    component: FavoritesComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'mes-recettes',
+    component: MyRecipesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'profile',

@@ -1,0 +1,20 @@
+<div class="favorites-container">
+  <h1>Mes Favoris</h1>
+
+  @if (loading()) {
+    <div class="loading">Chargement de vos recettes préférées...</div>
+  } @else if (error()) {
+    <div class="error">{{ error() }}</div>
+  } @else if (favorites().length === 0) {
+    <div class="empty-state">
+      <p>Vous n'avez pas encore de favoris.</p>
+      <p>Explorez les recettes et ajoutez-en à votre liste !</p>
+    </div>
+  } @else {
+    <div class="favorites-grid">
+      @for (recette of favorites(); track recette.id) {
+        <app-recipe-card [recette]="recette"></app-recipe-card>
+      }
+    </div>
+  }
+</div>
