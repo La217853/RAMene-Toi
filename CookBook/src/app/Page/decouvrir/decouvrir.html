@@ -1,0 +1,39 @@
+<div class="decouvrir-container">
+
+  <h1>Découvrir</h1>
+
+  <div class="search-filter-row">
+  
+  <input
+    #searchInput
+    type="text"
+    class="search-bar"
+    placeholder="Rechercher une recette..."
+    (input)="onSearchChange(searchInput.value)"
+  >
+
+  <select
+  #catSelect
+  class="filter-select"
+  (change)="onCategorieChange(catSelect.value)"
+>
+  <option value="">Tous les types</option>
+
+  <option *ngFor="let c of categories" [value]="c.id">
+    {{ c.nom_categorie }}
+  </option>
+</select>
+
+
+</div>
+
+
+  <!-- Résultats -->
+  <div class="recipes-grid">
+    <app-recipe-card
+      *ngFor="let recette of filteredRecettes"
+      [recette]="recette">
+    </app-recipe-card>
+  </div>
+
+</div>
