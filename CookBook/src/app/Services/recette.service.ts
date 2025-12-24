@@ -142,4 +142,17 @@ export class RecetteService {
   getRecetteIngredients(recetteId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/RecetteIngredients/Recette/${recetteId}`);
   }
+
+  getFavoris(userId: number) {
+  return this.http.get<Recette[]>(`${this.baseUrl}/Utilisateurs/${userId}/favoris`);
+}
+
+addFavori(userId: number, recetteId: number) {
+  return this.http.post(`${this.baseUrl}/Utilisateurs/${userId}/favoris/${recetteId}`, {});
+}
+
+removeFavori(userId: number, recetteId: number) {
+  return this.http.delete(`${this.baseUrl}/Utilisateurs/${userId}/favoris/${recetteId}`);
+}
+
 }

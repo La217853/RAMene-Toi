@@ -5,6 +5,7 @@ import { Recette } from '../../Models/recette.model';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { IngredientQuantite } from '../../Models/ingredient.models';
+import { AuthService } from '../../Services/auth';
 
 
 @Component({
@@ -21,14 +22,28 @@ export class RecetteDetailsComponent implements OnInit {
   loading = true;
   error = false;
   hasImage = false;
+  isFavori = false; 
+  userId!: number;
+
 
   constructor(
     private route: ActivatedRoute,
-    private recetteService: RecetteService
+    private recetteService: RecetteService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
   const id = Number(this.route.snapshot.paramMap.get('id'));
+
+  const currentUser = this.authService.currentUserSig();
+
+  if (!currentUser) {
+    console.error("Utilisateur non connecté");
+    return;
+  }
+
+  this.userId = currentUser.id;
+
 
   forkJoin({
     recette: this.recetteService.getRecetteById(id),
@@ -56,6 +71,13 @@ export class RecetteDetailsComponent implements OnInit {
   }
 
   this.loading = false;
+
+this.recetteService.getFavoris(this.userId).subscribe({
+  next: (favoris) => {
+    this.isFavori = favoris.some((r: Recette) => r.id === this.recette?.id);
+  }
+});
+
 },
     error: () => {
       this.error = true;
@@ -67,6 +89,25 @@ export class RecetteDetailsComponent implements OnInit {
 onImageError() { 
   this.hasImage = false;
 } 
+
+
+toggleFavori() {
+  if (!this.recette) return;
+
+  if (this.isFavori) {
+    // supprimer
+    this.recetteService.removeFavori(this.userId, this.recette.id).subscribe({
+      next: () => this.isFavori = false,
+      error: () => console.error("Erreur suppression favori")
+    });
+  } else {
+    // ajouter
+    this.recetteService.addFavori(this.userId, this.recette.id).subscribe({
+      next: () => this.isFavori = true,
+      error: () => console.error("Erreur ajout favori")
+    });
+  }
+}
 
 
 }
