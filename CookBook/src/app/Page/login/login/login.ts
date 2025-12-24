@@ -29,7 +29,7 @@ export class LoginComponent {
       
       this.authService.login(Pseudo!, MotDePasse!).subscribe({
         next: () => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/decouvrir']);
         },
         error: (err) => {
           console.error(err);

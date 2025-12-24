@@ -16,10 +16,6 @@ export class NavbarComponent {
     public authService: AuthService
   ) {}
 
-  navigateToHome(){
-    this.router.navigate(['/dashboard']);
-  }
-
   navigateToProfile() {
     this.router.navigate(['/profile']);
   }
@@ -46,5 +42,9 @@ export class NavbarComponent {
 
   isAuthenticated(): boolean {
     return !!this.authService.getToken();
+  }
+
+  navigateToDecouvrir(){
+    this.router.navigate(['/decouvrir'])
   }
 }

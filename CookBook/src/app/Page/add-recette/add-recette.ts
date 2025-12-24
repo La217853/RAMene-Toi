@@ -313,7 +313,7 @@ export class AddRecetteComponent implements OnInit {
     this.selectedFile = null;
 
     setTimeout(() => {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/decouvrir']);
     }, 2000);
   }
 
