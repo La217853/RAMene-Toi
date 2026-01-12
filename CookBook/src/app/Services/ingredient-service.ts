@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Ingredient } from './models/ingredient.models';
+import { Ingredient } from '../Models/ingredient.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IngredientService {
-  private apiUrl = 'http://localhost:3000/ingredients'; // adapte selon ton backend
+  private apiUrl = 'http://localhost:5230/ingredients';
 
   constructor(private http: HttpClient) {}
 

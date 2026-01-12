@@ -1,24 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
   constructor(
     private router: Router,
     public authService: AuthService
   ) {}
-
-  navigateToHome(){
-    this.router.navigate(['/dashboard']);
-  }
 
   navigateToProfile() {
     this.router.navigate(['/profile']);
@@ -28,11 +24,27 @@ export class NavbarComponent {
     this.router.navigate(['/admin/users']);
   }
 
+  navigateToAddRecette() {
+    this.router.navigate(['/add-recette']);
+  }
+
+  navigateToFavorites() {
+    this.router.navigate(['/favoris']);
+  }
+
+  navigateToMyRecipes() {
+    this.router.navigate(['/mes-recettes']);
+  }
+
   logout() {
     this.authService.logout();
   }
 
   isAuthenticated(): boolean {
     return !!this.authService.getToken();
+  }
+
+  navigateToDecouvrir(){
+    this.router.navigate(['/decouvrir'])
   }
 }

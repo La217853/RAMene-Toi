@@ -1,0 +1,20 @@
+<div class="my-recipes-container">
+  <h1>Mes Recettes</h1>
+
+  @if (loading()) {
+    <div class="loading">Chargement de vos recettes...</div>
+  } @else if (error()) {
+    <div class="error">{{ error() }}</div>
+  } @else if (myRecipes().length === 0) {
+    <div class="empty-state">
+      <p>Vous n'avez pas encore créé de recettes.</p>
+      <p>Partagez votre talent culinaire en ajoutant votre première recette !</p>
+    </div>
+  } @else {
+    <div class="recipes-grid">
+      @for (recette of myRecipes(); track recette.id) {
+        <app-recipe-card [recette]="recette"></app-recipe-card>
+      }
+    </div>
+  }
+</div>
